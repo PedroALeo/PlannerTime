@@ -10,6 +10,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// PATCH
+// HandlerUpdateEvent godoc
+// @Summary      Update the given event
+// @Param        params body repository.Event true "Params"
+// @Success      200  {object} string "ok"
+// @Failure      400  {object} string "invalid body"
+// @Failure      500  {object} string "ServiceUpdateEvent error"
+// @Router       /updateEvent [patch]
 func HandlerUpdateEvent(c echo.Context) error {
 	var event repository.Event
 
@@ -26,6 +34,14 @@ func HandlerUpdateEvent(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
+// DELETE
+// HandlerDeleteEvent godoc
+// @Summary      delete the event from the given id
+// @Param        eventID   path      int true	"ID do event"
+// @Success      200  {object} string "ok"
+// @Failure      400  {object} string "invalid id"
+// @Failure      500  {object} string "ServiceDeleteEvent error"
+// @Router       /deleteEvent/{eventId} [delete]
 func HandlerDeleteEvent(c echo.Context) error {
 	eventId := c.Param("eventId")
 
@@ -42,13 +58,22 @@ func HandlerDeleteEvent(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
-func HandlerLogin(c echo.Context) error {
-	type Body struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}
+type LoginBody struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
-	var body Body
+// POST
+// HandlerLogin godoc
+// @Summary      Login
+// @Param        params body router.LoginBody true "Params"
+// @Success      200  {object} string "ok"
+// @Failure      400  {object} string "invalid body"
+// @Failure      500  {object} string "ServiceLogin error"
+// @Router       /login [post]
+func HandlerLogin(c echo.Context) error {
+
+	var body LoginBody
 
 	err := json.NewDecoder(c.Request().Body).Decode(&body)
 	if err != nil {
@@ -67,6 +92,14 @@ func HandlerLogin(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
+// POST
+// HandlerGetUserScheduller godoc
+// @Summary      Get user scheduller
+// @Param        username   path      string true	"username do usuario"
+// @Success      200  {object} []repository.Event "ok"
+// @Failure      400  {object} string "invalid username"
+// @Failure      500  {object} string "GetUser error"
+// @Router       /userScheduller [post]
 func HandlerGetUserScheduller(c echo.Context) error {
 	username := c.Param("username")
 	if len(username) <= 0 {
@@ -86,6 +119,22 @@ func HandlerGetUserScheduller(c echo.Context) error {
 	return c.JSON(http.StatusOK, events)
 }
 
+type EventRequest struct {
+	StartDate   string `json:"startDate"`
+	EndDate     string `json:"endDate"`
+	Description string `json:"description"`
+	Priority    int    `json:"priority"`
+}
+
+// POST
+// HandlerCreateEvent godoc
+// @Summary      Create Event
+// @Param        username   path      string true	"username do usuario"
+// @Param        params body router.EventRequest true "Params"
+// @Success      200  {object} string "ok"
+// @Failure      400  {object} string "invalid username"
+// @Failure      500  {object} string "GetUser error"
+// @Router       /createEvent [post]
 func HandlerCreateEvent(c echo.Context) error {
 	username := c.Param("username")
 	if len(username) <= 0 {
@@ -97,13 +146,7 @@ func HandlerCreateEvent(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, "GetUser error")
 	}
 
-	type Request struct {
-		StartDate   string `json:"startDate"`
-		EndDate     string `json:"endDate"`
-		Description string `json:"description"`
-	}
-
-	var request Request
+	var request EventRequest
 
 	err = json.NewDecoder(c.Request().Body).Decode(&request)
 	if err != nil {
@@ -150,13 +193,21 @@ func HandlerCreateRestriction(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
+// POST
+// HandlerCreateUser godoc
+// @Summary      Create User
+// @Param        params body router.LoginBody true "Params"
+// @Success      200  {object} string "ok"
+// @Failure      400  {object} string "bad request"
+// @Failure      500  {object} string "createUser error"
+// @Router       /createUser [post]
 func HandlerCreateUser(c echo.Context) error {
 	type Request struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
 
-	var request Request
+	var request LoginBody
 
 	err := json.NewDecoder(c.Request().Body).Decode(&request)
 	if err != nil {
