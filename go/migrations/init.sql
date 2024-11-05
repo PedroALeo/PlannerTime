@@ -9,6 +9,7 @@ create table if not exists events (
 	start_timestamp timestamp not null,
 	end_timestamp timestamp not null,
 	description varchar(255),
+	priority integer,
 	user_id BIGINT NOT NULL,
 	constraint event_fk_user_id foreign key (user_id) references users(user_id)
 );

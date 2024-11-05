@@ -3,10 +3,44 @@ package router
 import (
 	"encoding/json"
 	"net/http"
+	"plannertime/repository"
 	"plannertime/service"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
+
+func HandlerUpdateEvent(c echo.Context) error {
+	var event repository.Event
+
+	err := json.NewDecoder(c.Request().Body).Decode(&event)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "invalid body")
+	}
+
+	err = service.ServiceUpdateEvent(event)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "ServiceUpdateEvent error")
+	}
+
+	return c.JSON(http.StatusOK, "ok")
+}
+
+func HandlerDeleteEvent(c echo.Context) error {
+	eventId := c.Param("eventId")
+
+	idInt, err := strconv.Atoi(eventId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "invalid id")
+	}
+
+	err = service.ServiceDeleteEvent(idInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "ServiceDeleteEvent error")
+	}
+
+	return c.JSON(http.StatusOK, "ok")
+}
 
 func HandlerLogin(c echo.Context) error {
 	type Body struct {

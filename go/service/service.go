@@ -9,6 +9,24 @@ import (
 
 type restrictions struct{}
 
+func ServiceDeleteEvent(eventId int) error {
+	err := repository.DeleteEvent(eventId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ServiceUpdateEvent(event repository.Event) error {
+	err := repository.UpdateEvent(event)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func ServiceGetUserScheduller(userId int) ([]repository.Event, error) {
 	events, _, err := repository.GetEventsAndRestrictions(userId)
 	if err != nil {

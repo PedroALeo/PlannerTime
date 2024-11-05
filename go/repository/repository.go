@@ -10,9 +10,49 @@ import (
 )
 
 type Event struct {
+	Id          int       `json:"eventId"`
 	Start       time.Time `json:"start"`
 	End         time.Time `json:"end"`
 	Description string    `json:"description"`
+	Priority    int       `json:"priority"`
+}
+
+func UpdateEvent(event Event) error {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return err
+	}
+
+	query := `update public.events
+	set start_timestamp=$1, end_timestamp=$2, description=$3, priority=$4
+	where event_id=$5;`
+
+	_, err = conn.Prepare(context.Background(), "ue", query)
+
+	_, err = conn.Exec(context.Background(), "ue", event.Start, event.End, event.Description, event.Priority)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteEvent(eventId int) error {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return err
+	}
+
+	query := `delete from public.events where event_id = $1`
+
+	_, err = conn.Prepare(context.Background(), "de", query)
+
+	_, err = conn.Exec(context.Background(), "de", eventId)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
@@ -21,7 +61,7 @@ func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
 		return nil, nil, err
 	}
 
-	eventsQuery := `select start_timestamp, end_timestamp, description from public.events where user_id = $1`
+	eventsQuery := `select event_id, start_timestamp, end_timestamp, description, priority from public.events where user_id = $1`
 
 	restrictionsQuery := `select description, crontab from public.restrictions where user_id = $1`
 
@@ -43,7 +83,7 @@ func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
 	var events []Event
 	for rows.Next() {
 		var event Event
-		if err := rows.Scan(&event.Start, &event.End, &event.Description); err != nil {
+		if err := rows.Scan(&event.Id, &event.Start, &event.End, &event.Description, &event.Priority); err != nil {
 			return nil, nil, err
 		}
 

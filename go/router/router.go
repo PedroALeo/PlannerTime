@@ -12,6 +12,8 @@ func InitEcho() {
 	e.POST("/createUser", HandlerCreateUser)
 	e.POST("/login", HandlerLogin)
 	e.POST("/createEvent/:username", HandlerCreateEvent)
+	e.DELETE("/deleteEvent/:eventId", HandlerDeleteEvent)
+	e.PATCH("/updateEvent", HandlerUpdateEvent)
 	e.POST("/createRestrictions/:username", HandlerCreateRestriction)
 	e.GET("/userScheduller/:username", HandlerGetUserScheduller)
 
