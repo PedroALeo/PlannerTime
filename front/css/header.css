@@ -1,11 +1,11 @@
 header {
-    background: white; /* Fundo branco */
-    padding: 20px 30px; /* Padding para dar espaço */
-    display: flex; /* Usando flexbox para melhor alinhamento */
-    align-items: center; /* Centraliza verticalmente */
-    justify-content: space-between; /* Espaça logo e nav */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidade */
-    border-radius: 10px; /* Arredondamento dos cantos do cabeçalho */
+    background: white; 
+    padding: 20px 30px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .logo-container {
@@ -14,61 +14,61 @@ header {
 }
 
 .logo {
-    width: 50px; /* Largura do logo */
-    height: auto; /* Altura automática para manter a proporção */
-    margin-right: 10px; /* Espaço entre o logo e o texto */
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
 }
 
 nav {
-    display: flex; /* Usando flexbox para a navegação */
+    display: flex;
 }
 
 .nav-links {
-    display: flex; /* Certificando-se de que os links estão em linha */
-    list-style-type: none; /* Remove marcadores da lista */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margin */
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .nav-links li {
-    margin: 0 15px; /* Espaçamento entre os itens */
+    margin: 0 15px;
 }
 
 .nav-links a {
-    text-decoration: none; /* Remove o sublinhado */
-    font-weight: bold; /* Aumenta a legibilidade */
-    transition: color 0.3s; /* Suaviza a transição de cor */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
 .nav-links a:hover {
-    text-decoration: underline; /* Sublinha ao passar o mouse */
+    text-decoration: underline;
 }
 
 /* Estilo para o botão de logout */
 .login-button {
-    background-color: #007bff; /* Cor de fundo azul para destaque */
-    color: white; /* Cor do texto branca */
-    padding: 10px 15px; /* Padding para aumentar a área clicável */
-    border: none; /* Remove bordas */
-    border-radius: 5px; /* Bordas arredondadas */
-    font-weight: bold; /* Aumenta a legibilidade */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .nome {
-    font-size: 24px; /* Tamanho da fonte para o texto do logo */
-    font-weight: bold; /* Negrito para o texto */
-    color: black; /* Cor do texto azul */
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
 }
 
 /* Adicionando responsividade */
 @media (max-width: 600px) {
     header {
-        flex-direction: column; /* Alinha os itens verticalmente em telas menores */
-        text-align: center; /* Centraliza o texto */
+        flex-direction: column;
+        text-align: center;
     }
     
     .nav-links li {
-        margin: 10px 0; /* Ajusta margem para itens em coluna */
+        margin: 10px 0;
     }
 }

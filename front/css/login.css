@@ -3,44 +3,44 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-    background: linear-gradient(135deg, #4a90e2, #5379fa); /* Gradiente de azul para o fundo */
-    color: #333; /* Cor do texto principal */
+    background: linear-gradient(135deg, #4a90e2, #5379fa);
+    color: #333;
 }
 
 /* Estilo para o cabeçalho da página */
 .header h1 {
     font-weight: 600;
-    font-size: 60px; /* Aumentar o tamanho do título */
+    font-size: 60px;
 }
 
 .header h2 {
     font-weight: 200;
-    font-size: 25px; /* Aumentar o tamanho do subtítulo */
+    font-size: 25px;
 }
 
 /* Estilo do card principal */
 .card {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra mais suave */
-    width: 100%; /* Largura do card responsivo */
-    max-width: 600px; /* Largura máxima do card */
-    border-radius: 15px; /* Bordas arredondadas */
-    background-color: #fff; /* Fundo branco para o card */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px;
+    background-color: #fff; 
 }
 
 /* Estilo dos campos de entrada */
 .form-control {
-    border-radius: 25px; /* Bordas arredondadas nos campos de entrada */
-    transition: border-color 0.3s, box-shadow 0.3s; /* Transição suave para a borda */
-    height: 45px; /* Aumentar a altura dos campos de entrada */
-    font-size: 16px; /* Aumentar o tamanho da fonte */
-    padding: 10px 15px; /* Padding interno nos campos de entrada */
-    border: 1px solid #ccc; /* Borda padrão */
+    border-radius: 25px; 
+    transition: border-color 0.3s, box-shadow 0.3s;
+    height: 45px;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
 }
 
 /* Foco nos campos de entrada */
 .form-control:focus {
-    border-color: #5379fa; /* Cor da borda em foco */
-    box-shadow: 0 0 5px rgba(83, 121, 250, 0.5); /* Sombra ao focar */
+    border-color: #5379fa;
+    box-shadow: 0 0 5px rgba(83, 121, 250, 0.5);
 }
 
 /* Estilo do botão principal */
