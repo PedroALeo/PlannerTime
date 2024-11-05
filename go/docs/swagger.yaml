@@ -1,0 +1,186 @@
+basePath: /
+definitions:
+  repository.Event:
+    properties:
+      description:
+        type: string
+      end:
+        type: string
+      eventId:
+        type: integer
+      priority:
+        type: integer
+      start:
+        type: string
+    type: object
+  router.EventRequest:
+    properties:
+      description:
+        type: string
+      endDate:
+        type: string
+      priority:
+        type: integer
+      startDate:
+        type: string
+    type: object
+  router.LoginBody:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API em Go projeto Planner Time
+  title: API Golang Planner Time
+  version: "0.1"
+paths:
+  /createEvent:
+    post:
+      parameters:
+      - description: username do usuario
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: Params
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/router.EventRequest'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid username
+          schema:
+            type: string
+        "500":
+          description: GetUser error
+          schema:
+            type: string
+      summary: Create Event
+  /createUser:
+    post:
+      parameters:
+      - description: Params
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/router.LoginBody'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+        "500":
+          description: createUser error
+          schema:
+            type: string
+      summary: Create User
+  /deleteEvent/{eventId}:
+    delete:
+      parameters:
+      - description: ID do event
+        in: path
+        name: eventID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid id
+          schema:
+            type: string
+        "500":
+          description: ServiceDeleteEvent error
+          schema:
+            type: string
+      summary: delete the event from the given id
+  /login:
+    post:
+      parameters:
+      - description: Params
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/router.LoginBody'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid body
+          schema:
+            type: string
+        "500":
+          description: ServiceLogin error
+          schema:
+            type: string
+      summary: Login
+  /updateEvent:
+    patch:
+      parameters:
+      - description: Params
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/repository.Event'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid body
+          schema:
+            type: string
+        "500":
+          description: ServiceUpdateEvent error
+          schema:
+            type: string
+      summary: Update the given event
+  /userScheduller:
+    post:
+      parameters:
+      - description: username do usuario
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            items:
+              $ref: '#/definitions/repository.Event'
+            type: array
+        "400":
+          description: invalid username
+          schema:
+            type: string
+        "500":
+          description: GetUser error
+          schema:
+            type: string
+      summary: Get user scheduller
+schemes:
+- http
+swagger: "2.0"
