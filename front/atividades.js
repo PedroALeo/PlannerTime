@@ -1,10 +1,13 @@
 const tabelaAtividades = document.getElementById('tabelaAtividades').querySelector('tbody');
-const apiEndpoint = 'http://localhost:8080/swagger'; // verificar essa API com o back-end
+const apiEndpoint = 'http://localhost:8080/'; // verificar essa API com o back-end
 
 // Carregar tarefas ao carregar a página
 async function carregarTarefas() {
+    const listarTarefas = 'http://localhost:8080/listarTodos'; //pegar a url do back
     try {
-        const response = await fetch(apiEndpoint);
+        const response = await fetch(listarTarefas,{
+            method:'GET'
+        });
         const tarefas = await response.json();
 
         // Adiciona cada tarefa na tabela
@@ -155,6 +158,7 @@ function editarTarefa(botao) {
 */
 
 // Função para excluir uma tarefa
+/*
 async function excluirTarefa(botao) {
     const linha = botao.closest('tr');
     const id = linha.dataset.id;
@@ -173,17 +177,16 @@ async function excluirTarefa(botao) {
         console.error('Erro ao excluir tarefa:', error);
     }
 }
-
+*/
 // Carregar as tarefas inicialmente
 carregarTarefas();
 
 
 
 
-/*
+
 // Função para excluir uma tarefa
 function excluirTarefa(botao) {
     const linha = botao.closest('tr');
     tabelaAtividades.removeChild(linha);
 }
-*/

@@ -60,3 +60,9 @@ body {
     border-color: #3a5bbd;
     transform: translateY(-2px); 
 }
+
+.criarConta{
+    vertical-align: auto;
+    align-items: center;
+    z-index: auto;
+}
