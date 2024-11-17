@@ -3,10 +3,15 @@ const apiEndpoint = 'http://localhost:8080/'; // verificar essa API com o back-e
 
 // Carregar tarefas ao carregar a página
 async function carregarTarefas() {
-    const listarTarefas = 'http://localhost:8080/listarTodos'; //pegar a url do back
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user');
+
+    const listarTarefas = `localhost:8080/userScheduller/${user}`; //como pegar esse user ?
+
     try {
         const response = await fetch(listarTarefas,{
-            method:'GET'
+                method:'GET'
         });
         const tarefas = await response.json();
 
