@@ -30,6 +30,7 @@ func ServiceUpdateEvent(event repository.Event) error {
 func ServiceGetUserScheduller(userId int) ([]repository.Event, error) {
 	events, _, err := repository.GetEventsAndRestrictions(userId)
 	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 

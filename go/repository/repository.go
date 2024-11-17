@@ -61,21 +61,13 @@ func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
 		return nil, nil, err
 	}
 
+	println(userId)
+
 	eventsQuery := `select event_id, start_timestamp, end_timestamp, description, priority from public.events where user_id = $1`
 
-	restrictionsQuery := `select description, crontab from public.restrictions where user_id = $1`
+	//restrictionsQuery := `select description, crontab from public.restrictions where user_id = $1`
 
-	_, err = conn.Prepare(context.Background(), "se", eventsQuery)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	_, err = conn.Prepare(context.Background(), "sr", restrictionsQuery)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	rows, err := conn.Query(context.Background(), "se", userId)
+	rows, err := conn.Query(context.Background(), eventsQuery, userId)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -90,10 +82,10 @@ func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
 		events = append(events, event)
 	}
 
-	_, err = conn.Query(context.Background(), "sr", userId)
-	if err != nil {
-		return nil, nil, err
-	}
+	//_, err = conn.Query(context.Background(), "sr", userId)
+	//if err != nil {
+	//	return nil, nil, err
+	//}
 
 	return events, nil, nil
 }

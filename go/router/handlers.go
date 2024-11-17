@@ -111,6 +111,8 @@ func HandlerGetUserScheduller(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, "GetUser error")
 	}
 
+	println(user.Username)
+
 	events, err := service.ServiceGetUserScheduller(user.Id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "GetUserScheduller error")
