@@ -5,6 +5,7 @@ import (
 	_ "plannertime/docs"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echoswagger "github.com/swaggo/echo-swagger"
 )
 
@@ -17,6 +18,8 @@ import (
 // @schemes http
 func InitEcho() {
 	e := echo.New()
+
+	e.Use(middleware.CORS())
 
 	e.GET("/swagger*", echoswagger.WrapHandler)
 	e.POST("/createUser", HandlerCreateUser)
