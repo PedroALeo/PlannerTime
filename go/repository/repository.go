@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"log"
 	"plannertime/db"
 	"plannertime/entity"
 	"time"
@@ -31,6 +32,7 @@ func UpdateEvent(event Event) error {
 
 	_, err = conn.Exec(context.Background(), "ue", event.Duration, event.End, event.Description, event.Priority)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
