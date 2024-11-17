@@ -26,11 +26,11 @@
                 alert('Login realizado com sucesso!');
 
                 // Salve as informações do usuário (exemplo: token de autenticação) no localStorage
-                localStorage.setItem('userToken', data.token);
-                localStorage.setItem('userId', data.userId);
+                localStorage.setItem('username', username);
+
 
                 // Redireciona para a página inicial ou painel do usuário
-                window.location.href = 'dashboard.html';
+                window.location.href = 'index.html';
             } else if (response.status === 401) {
                 alert('Usuário ou senha inválidos.');
             } else {
