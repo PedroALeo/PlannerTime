@@ -30,7 +30,7 @@ func UpdateEvent(event Event) error {
 
 	_, err = conn.Prepare(context.Background(), "ue", query)
 
-	_, err = conn.Exec(context.Background(), "ue", event.Duration, event.End, event.Description, event.Priority)
+	_, err = conn.Exec(context.Background(), "ue", event.Duration, event.End, event.Description, event.Priority, event.Id)
 	if err != nil {
 		log.Println(err.Error())
 		return err
