@@ -28,6 +28,8 @@ func InitEcho() {
 	e.DELETE("/deleteEvent/:eventId", HandlerDeleteEvent)
 	e.PATCH("/updateEvent", HandlerUpdateEvent)
 	e.POST("/createRestrictions/:username", HandlerCreateRestriction)
+	e.PATCH("/updateRestrictions/:username", HandlerUpdateRestriction)
+	e.DELETE("/deleteRestrictions/:username", HandlerDeleteRestriction)
 	e.GET("/userScheduller/:username", HandlerGetUserScheduller)
 
 	for _, route := range e.Routes() {

@@ -74,8 +74,26 @@ func ServiceCreateEvent(userId int, startDate, endDate, description string) erro
 	return nil
 }
 
-func ServiceCreateRestriction(userId int, startDate, endDate, description string) error {
-	err := repository.CreateRestriction(userId, startDate, endDate, description)
+func ServiceCreateRestriction(userId int, crontab, description string) error {
+	err := repository.CreateRestriction(userId, crontab, description)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ServiceUpdateRestriction(userId int, crontab, description string) error {
+	err := repository.UpdateRestriction(userId, crontab, description)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ServiceDeleteRestriction(userId int) error {
+	err := repository.DeleteRestriction(userId)
 	if err != nil {
 		return err
 	}
