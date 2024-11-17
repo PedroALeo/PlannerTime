@@ -116,12 +116,7 @@ func GetUser(username string) (*userEntity.User, error) {
 	return &user, nil
 }
 
-func CreateEvent(userId int, startDate, endDate, description string) error {
-	startDateTimestamp, err := time.Parse(time.DateTime, startDate)
-	if err != nil {
-		return err
-	}
-
+func CreateEvent(userId, estimateDuration, priority int, endDate, description string) error {
 	endDateTimestamp, err := time.Parse(time.DateTime, endDate)
 	if err != nil {
 		return err
@@ -133,15 +128,15 @@ func CreateEvent(userId int, startDate, endDate, description string) error {
 	}
 
 	query := `insert into public.events
-	(start_timestamp, end_timestamp, description, user_id)
-	values($1, $2, $3, $4);`
+	(duration, priority, end_timestamp, description, user_id)
+	values($1, $2, $3, $4, $5);`
 
 	_, err = conn.Prepare(context.Background(), "ie", query)
 	if err != nil {
 		return err
 	}
 
-	_, err = conn.Exec(context.Background(), "ie", startDateTimestamp, endDateTimestamp, description, userId)
+	_, err = conn.Exec(context.Background(), "ie", estimateDuration, priority, endDateTimestamp, description, userId)
 	if err != nil {
 		return err
 	}

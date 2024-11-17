@@ -65,8 +65,8 @@ func ServiceCreateUser(username, password string) error {
 	return nil
 }
 
-func ServiceCreateEvent(userId int, startDate, endDate, description string) error {
-	err := repository.CreateEvent(userId, startDate, endDate, description)
+func ServiceCreateEvent(userId, EstimatedDuration, priority int, endDate, description string) error {
+	err := repository.CreateEvent(userId, EstimatedDuration, priority, endDate, description)
 	if err != nil {
 		return err
 	}

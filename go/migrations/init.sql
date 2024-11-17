@@ -6,7 +6,7 @@ create table if not exists users (
 
 create table if not exists events (
 	event_id bigserial not null,
-	start_timestamp timestamp not null,
+	duration integer not null,
 	end_timestamp timestamp not null,
 	description varchar(255),
 	priority integer,
