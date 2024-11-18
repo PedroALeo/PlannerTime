@@ -5,6 +5,7 @@ import (
 	_ "plannertime/docs"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echoswagger "github.com/swaggo/echo-swagger"
 )
 
@@ -18,6 +19,8 @@ import (
 func InitEcho() {
 	e := echo.New()
 
+	e.Use(middleware.CORS())
+
 	e.GET("/swagger*", echoswagger.WrapHandler)
 	e.POST("/createUser", HandlerCreateUser)
 	e.POST("/login", HandlerLogin)
@@ -25,6 +28,8 @@ func InitEcho() {
 	e.DELETE("/deleteEvent/:eventId", HandlerDeleteEvent)
 	e.PATCH("/updateEvent", HandlerUpdateEvent)
 	e.POST("/createRestrictions/:username", HandlerCreateRestriction)
+	e.PATCH("/updateRestrictions/:username", HandlerUpdateRestriction)
+	e.DELETE("/deleteRestrictions/:username", HandlerDeleteRestriction)
 	e.GET("/userScheduller/:username", HandlerGetUserScheduller)
 
 	for _, route := range e.Routes() {

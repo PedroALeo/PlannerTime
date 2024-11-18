@@ -6,7 +6,7 @@ create table if not exists users (
 
 create table if not exists events (
 	event_id bigserial not null,
-	start_timestamp timestamp not null,
+	duration integer not null,
 	end_timestamp timestamp not null,
 	description varchar(255),
 	priority integer,
@@ -17,7 +17,7 @@ create table if not exists events (
 create table if not exists restrictions (
 	restriction_id bigserial not null,
 	description varchar(255),
-	crontab varchar(255),
+	frequency varchar(255),
 	user_id BIGINT NOT NULL,
 	constraint restriction_fk_user_id foreign key (user_id) references users(user_id)
 );

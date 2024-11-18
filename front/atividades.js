@@ -1,24 +1,32 @@
 const tabelaAtividades = document.getElementById('tabelaAtividades').querySelector('tbody');
-const apiEndpoint = 'http://localhost:8080/'; // verificar essa API com o back-end
+const apiEndpoint = 'http://localhost:8080'; // verificar essa API com o back-end
 
 // Carregar tarefas ao carregar a página
 async function carregarTarefas() {
-    const listarTarefas = 'http://localhost:8080/listarTodos'; //pegar a url do back
+
+    const user = localStorage.getItem('username');
+    console.log(user);
+
+    const listarTarefas = `http://localhost:8080/userScheduller/${user}`;
+
     try {
         const response = await fetch(listarTarefas,{
-            method:'GET'
+                method:'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
         });
         const tarefas = await response.json();
-
+        console.log(tarefas);
         // Adiciona cada tarefa na tabela
         tarefas.forEach(tarefa => {
             const novaLinha = document.createElement('tr');
-            novaLinha.dataset.id = tarefa.id; // Guarda o ID da tarefa
+            novaLinha.dataset.id = tarefa.eventId; // Guarda o ID da tarefa
             novaLinha.innerHTML = `
-                <td>${tarefa.atividade}</td>
-                <td>${tarefa.tempoEstimado}</td>
-                <td>${tarefa.prioridade}</td>
-                <td>${tarefa.prazo}</td>
+                <td>${tarefa.description}</td>
+                <td>${tarefa.duration}</td>
+                <td>${tarefa.priority}</td>
+                <td>${tarefa.end}</td>
                 <td>
                     <button class="btn-editar" onclick="editarTarefa(this)">Editar</button>
                     <button class="btn-excluir" onclick="excluirTarefa(this)">Excluir</button>
@@ -54,10 +62,10 @@ async function salvarNovaTarefa(botao) {
     const linha = botao.closest('tr');
     const inputs = linha.querySelectorAll('.input-edit');
     const tarefa = {
-        atividade: inputs[0].value,
-        tempoEstimado: inputs[1].value,
-        prioridade: inputs[2].value,
-        prazo: inputs[3].value,
+        description: inputs[0].value,
+        duration: inputs[1].value,
+        priority: inputs[2].value,
+        end: inputs[3].value,
     };
 
     try {
@@ -89,16 +97,17 @@ async function editarTarefa(botao) {
     if (editando) {
         const inputs = linha.querySelectorAll('.input-edit');
         const tarefaAtualizada = {
-            id: linha.dataset.id,
-            atividade: inputs[0].value,
-            tempoEstimado: inputs[1].value,
-            prioridade: inputs[2].value,
-            prazo: inputs[3].value,
+            eventId: parseInt(linha.dataset.id),
+            description: inputs[0].value,
+            duration: parseInt(inputs[1].value),
+            priority: parseInt(inputs[2].value),
+            end: inputs[3].value,
         };
+        console.log(tarefaAtualizada)
 
         try {
-            const response = await fetch(`${apiEndpoint}/${tarefaAtualizada.id}`, {
-                method: 'PUT',
+            const response = await fetch(`${apiEndpoint}/updateEvent`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
