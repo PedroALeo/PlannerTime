@@ -6,8 +6,6 @@ import (
 	"plannertime/db"
 	"plannertime/entity"
 	"time"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Event struct {
@@ -16,6 +14,12 @@ type Event struct {
 	End         time.Time `json:"end"`
 	Description string    `json:"description"`
 	Priority    int       `json:"priority"`
+}
+
+type Restriction struct {
+	Id          int    `json:"restrictionId"`
+	Frequency   string `json:"frequency"`
+	Description string `json:"description"`
 }
 
 func UpdateEvent(event Event) error {
@@ -57,39 +61,58 @@ func DeleteEvent(eventId int) error {
 	return nil
 }
 
-func GetEventsAndRestrictions(userId int) ([]Event, pgx.Rows, error) {
+func GetRest(userId int) ([]Restriction, error) {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
+	}
+
+	restrictionsQuery := `select restriction_id, description, frequency from public.restrictions where user_id = $1`
+
+	rows, err := conn.Query(context.Background(), restrictionsQuery, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	var rests []Restriction
+	for rows.Next() {
+		var rest Restriction
+		if err := rows.Scan(&rest.Id, &rest.Description, &rest.Frequency); err != nil {
+			return nil, err
+		}
+
+		rests = append(rests, rest)
+	}
+
+	return rests, nil
+}
+
+func GetEventsAndRestrictions(userId int) ([]Event, error) {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return nil, err
 	}
 
 	println(userId)
 
 	eventsQuery := `select event_id, duration, end_timestamp, description, priority from public.events where user_id = $1`
 
-	//restrictionsQuery := `select description, crontab from public.restrictions where user_id = $1`
-
 	rows, err := conn.Query(context.Background(), eventsQuery, userId)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	var events []Event
 	for rows.Next() {
 		var event Event
 		if err := rows.Scan(&event.Id, &event.Duration, &event.End, &event.Description, &event.Priority); err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
 		events = append(events, event)
 	}
 
-	//_, err = conn.Query(context.Background(), "sr", userId)
-	//if err != nil {
-	//	return nil, nil, err
-	//}
-
-	return events, nil, nil
+	return events, nil
 }
 
 func GetUser(username string) (*userEntity.User, error) {

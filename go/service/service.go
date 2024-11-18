@@ -27,8 +27,18 @@ func ServiceUpdateEvent(event repository.Event) error {
 	return nil
 }
 
+func GetRes(userId int) ([]repository.Restriction, error) {
+	rests, err := repository.GetRest(userId)
+	if err != nil {
+		println(err.Error())
+		return nil, err
+	}
+
+	return rests, nil
+}
+
 func ServiceGetUserScheduller(userId int) ([]repository.Event, error) {
-	events, _, err := repository.GetEventsAndRestrictions(userId)
+	events, err := repository.GetEventsAndRestrictions(userId)
 	if err != nil {
 		println(err.Error())
 		return nil, err

@@ -121,6 +121,25 @@ func HandlerGetUserScheduller(c echo.Context) error {
 	return c.JSON(http.StatusOK, events)
 }
 
+func HandlerGetRests(c echo.Context) error {
+	username := c.Param("username")
+	if len(username) <= 0 {
+		return c.JSON(http.StatusBadRequest, "invalid username")
+	}
+
+	user, err := service.ServiceFindUser(username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "GetUser error")
+	}
+
+	rests, err := service.GetRes(user.Id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "GetUserScheduller error")
+	}
+
+	return c.JSON(http.StatusOK, rests)
+}
+
 type EventRequest struct {
 	EstimateDuration int    `json:"duration"`
 	EndDate          string `json:"endDate"`

@@ -31,6 +31,7 @@ func InitEcho() {
 	e.PATCH("/updateRestrictions/:username", HandlerUpdateRestriction)
 	e.DELETE("/deleteRestrictions/:username", HandlerDeleteRestriction)
 	e.GET("/userScheduller/:username", HandlerGetUserScheduller)
+	e.GET("/getRestrictions/:username", HandlerGetRests)
 
 	for _, route := range e.Routes() {
 		fmt.Printf("Path: %s, Method: %s\n", route.Path, route.Method)
