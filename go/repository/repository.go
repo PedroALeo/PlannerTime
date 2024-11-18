@@ -222,7 +222,7 @@ func DeleteRestriction(userId int) error {
 		return err
 	}
 
-	query := `delete from public.restrictions where user_id = $1;`
+	query := `delete from public.restrictions where restriction_id = $1;`
 
 	_, err = conn.Prepare(context.Background(), "ir", query)
 	if err != nil {

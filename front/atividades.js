@@ -91,6 +91,8 @@ function salvarTarefa(button) {
     .catch(error => {
         console.error('Erro ao salvar a tarefa:', error);
     });
+
+    location.reload()
 }
 
 // Função para editar e salvar uma tarefa
@@ -183,6 +185,7 @@ async function excluirTarefa(botao) {
 
         if (response.ok) {
             tabelaAtividades.removeChild(linha);
+            location.reload()
         } else {
             console.error('Erro ao excluir tarefa:', response.statusText);
         }

@@ -254,12 +254,12 @@ func HandlerDeleteRestriction(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "invalid username")
 	}
 
-	user, err := service.ServiceFindUser(username)
+	idInt, err := strconv.Atoi(username)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, "GetUser error")
+		return c.JSON(http.StatusBadRequest, "invalid id")
 	}
 
-	err = service.ServiceDeleteRestriction(user.Id)
+	err = service.ServiceDeleteRestriction(idInt)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "ServiceDeleteRestriction error")
 	}

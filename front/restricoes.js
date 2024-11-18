@@ -53,12 +53,13 @@ async function excluirTarefa(botao) {
     const id = linha.dataset.id;
     console.log(id);
     try {
-        const response = await fetch(`${apiEndpoint}/deleteRestrictions/${id}`, {
+        const response = await fetch(`http://localhost:8080/deleteRestrictions/${id}`, {
             method: 'DELETE',
         });
 
         if (response.ok) {
             tabelaAtividades.removeChild(linha);
+            location.reload()
         } else {
             console.error('Erro ao excluir restricao:', response.statusText);
         }
@@ -93,10 +94,13 @@ function salvarRestricao(button) {
     .then(response => response.json())
     .then(data => {
         console.log('Restrição salva com sucesso:', data);
+        
     })
     .catch(error => {
         console.error('Erro ao salvar a restrição:', error);
     });
+
+    location.reload()
 }
 
 
