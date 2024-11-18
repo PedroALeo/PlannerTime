@@ -1,11 +1,10 @@
 const tabelaAtividades = document.getElementById('tabelaAtividades').querySelector('tbody');
-const apiEndpoint = 'http://localhost:8080'; // verificar essa API com o back-end
+const apiEndpoint = 'http://localhost:8080';
 
 // Carregar tarefas ao carregar a página
 async function carregarTarefas() {
 
     const user = localStorage.getItem('username');
-    console.log(user);
 
     const listarTarefas = `http://localhost:8080/userScheduller/${user}`;
 
@@ -167,13 +166,13 @@ function editarTarefa(botao) {
 */
 
 // Função para excluir uma tarefa
-/*
+
 async function excluirTarefa(botao) {
     const linha = botao.closest('tr');
     const id = linha.dataset.id;
-
+    console.log(id);
     try {
-        const response = await fetch(`${apiEndpoint}/${id}`, {
+        const response = await fetch(`${apiEndpoint}/deleteEvent/${id}`, {
             method: 'DELETE',
         });
 
@@ -186,7 +185,7 @@ async function excluirTarefa(botao) {
         console.error('Erro ao excluir tarefa:', error);
     }
 }
-*/
+
 // Carregar as tarefas inicialmente
 carregarTarefas();
 
@@ -195,7 +194,9 @@ carregarTarefas();
 
 
 // Função para excluir uma tarefa
+/*
 function excluirTarefa(botao) {
     const linha = botao.closest('tr');
     tabelaAtividades.removeChild(linha);
 }
+    */
