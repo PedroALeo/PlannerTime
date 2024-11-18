@@ -49,43 +49,48 @@ function adicionarTarefa() {
         <td><input type="text" class="input-edit" placeholder="Prioridade" /></td>
         <td><input type="text" class="input-edit" placeholder="Prazo" /></td>
         <td>
-            <button class="btn-editar" onclick="editarTarefa(this)">Salvar</button>
+            <button class="btn-editar" onclick="salvarTarefa(this)">Salvar</button>
             <button class="btn-excluir" onclick="excluirTarefa(this)">Excluir</button>
         </td>
     `;
     tabelaAtividades.appendChild(novaLinha);
 }
 
-// Salvar nova tarefa no back-end
-async function salvarNovaTarefa(botao) {
-    const linha = botao.closest('tr');
-    const inputs = linha.querySelectorAll('.input-edit');
-    const tarefa = {
-        description: inputs[0].value,
-        duration: inputs[1].value,
-        priority: inputs[2].value,
-        end: inputs[3].value,
+function salvarTarefa(button) {
+
+    const linha = button.closest('tr');
+    const user = localStorage.getItem('username');
+
+    const atividade = linha.querySelector('input[placeholder="Nova Atividade"]').value;
+    const tempoEstimado =  parseInt(linha.querySelector('input[placeholder="Tempo Estimado"]').value);
+    const prioridade =  parseInt(linha.querySelector('input[placeholder="Prioridade"]').value);
+    const prazo = linha.querySelector('input[placeholder="Prazo"]').value;
+
+    const dados = {
+        description: atividade,
+        duration: tempoEstimado,
+        priority: prioridade,
+        endDate: prazo
     };
 
-    try {
-        const response = await fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(tarefa),
-        });
+    console.log(dados)
 
-        if (response.ok) {
-            const novaTarefa = await response.json();
-            linha.dataset.id = novaTarefa.id; // Salva o ID retornado
-            editarTarefa(botao); // Converte para modo visualização
-        } else {
-            console.error('Erro ao salvar tarefa:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Erro ao salvar tarefa:', error);
-    }
+    const urlAddTarefa = apiEndpoint + `/createEvent/${user}`;
+
+    fetch(urlAddTarefa, { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Tarefa salva com sucesso:', data);
+    })
+    .catch(error => {
+        console.error('Erro ao salvar a tarefa:', error);
+    });
 }
 
 // Função para editar e salvar uma tarefa
