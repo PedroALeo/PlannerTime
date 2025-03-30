@@ -119,3 +119,12 @@ func ServiceFindUser(username string) (userEntity.User, error) {
 
 	return *user, nil
 }
+
+func ServiceUpdateUser(user userEntity.User) error {
+	err := repository.UpdateUser(user)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

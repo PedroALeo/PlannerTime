@@ -22,7 +22,9 @@ func InitEcho() {
 	e.Use(middleware.CORS())
 
 	e.GET("/swagger*", echoswagger.WrapHandler)
+	e.GET("/getUser/:username", HandlerGetUser)
 	e.POST("/createUser", HandlerCreateUser)
+	e.PATCH("/updateUser", HandlerUpdateUser)
 	e.POST("/login", HandlerLogin)
 	e.POST("/createEvent/:username", HandlerCreateEvent)
 	e.DELETE("/deleteEvent/:eventId", HandlerDeleteEvent)

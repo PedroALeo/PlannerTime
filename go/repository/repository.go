@@ -254,3 +254,29 @@ func CreateUser(username, password string) error {
 
 	return nil
 }
+
+func UpdateUser(user userEntity.User) error {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return err
+	}
+
+	query := `
+	UPDATE public.users
+	SET username=$1, password=$2, bio=$3, email=$4, phone_number=$5, language_preference=$6, profile_picture=$7
+	WHERE user_id=$8;`
+
+	_, err = conn.Prepare(context.Background(), "update_user", query)
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	_, err = conn.Exec(context.Background(), "update_user", user.Username, user.Password, user.Bio, user.Email, user.PhoneNumber, user.LanguagePreference, user.ProfilePicture, user.Id)
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}

@@ -267,6 +267,39 @@ func HandlerDeleteRestriction(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
+
+func HandlerGetUser(c echo.Context) error {
+	username := c.Param("username")
+	if len(username) <= 0 {
+		return c.JSON(http.StatusBadRequest, "invalid username")
+	}
+
+	user, err := service.ServiceFindUser(username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "GetUser error")
+	}
+
+	println(user.Username)
+
+	return c.JSON(http.StatusOK, user)
+}
+
+func HandlerUpdateUser(c echo.Context) error {
+	var user userEntity.User
+
+	err := json.NewDecoder(c.Request().Body).Decode(&user)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "invalid body")
+	}
+
+	err = service.ServiceUpdateUser(user)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "ServiceUpdateUser error")
+	}
+
+	return c.JSON(http.StatusOK, "ok")
+}
+
 // POST
 // HandlerCreateUser godoc
 // @Summary      Create User
