@@ -237,18 +237,20 @@ func DeleteRestriction(userId int) error {
 	return nil
 }
 
-func CreateUser(username, password string) error {
+func CreateUser(email, username, password string) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
 	query := `INSERT INTO public.users
-	(username, "password")
-	VALUES($1, $2);`
+	(username, email, "password")
+	VALUES($1, $2, $3);`
 
-	_, err = conn.Exec(context.Background(), query, username, password)
+	_, err = conn.Exec(context.Background(), query, username, email, password)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
