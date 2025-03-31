@@ -6,12 +6,13 @@ export default function Layout() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isLP = location.pathname === "/lp";
+  const signUp = location.pathname === "/signup";
 
   return (
     <div className=" flex min-h-screen flex-col bg-gray-50 w-full">
       <Header />
       <div className="flex flex-1 w-full h-full z-10 pt-0.5">
-        <div hidden={isLP || isLoginPage}>
+        <div hidden={isLP || isLoginPage || signUp}>
           <Sidebar />
         </div>
         <Outlet />
@@ -19,3 +20,4 @@ export default function Layout() {
     </div>
   );
 }
+  

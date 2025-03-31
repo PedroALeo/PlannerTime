@@ -90,8 +90,8 @@ func ServiceCreateTask(userEmail, endDate string, EstimatedDuration, priority in
 	return nil
 }
 
-func ServiceCreateRestriction(userId int, crontab, description string) error {
-	err := repository.CreateRestriction(userId, crontab, description)
+func ServiceCreateRestriction(userId int, name, start, end string, days []string) error {
+	err := repository.CreateRestriction(userId, name, start, end, days)
 	if err != nil {
 		return err
 	}

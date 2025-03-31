@@ -20,8 +20,10 @@ create table if not exists events (
 
 create table if not exists restrictions (
 	restriction_id bigserial not null,
-	description varchar(255),
-	frequency varchar(255),
+	name varchar(255),
+	day varchar(255),
+	start integer,
+	end integer,
 	user_id BIGINT NOT NULL,
 	constraint restriction_fk_user_id foreign key (user_id) references users(user_id)
 );

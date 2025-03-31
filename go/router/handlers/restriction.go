@@ -10,19 +10,21 @@ import (
 )
 
 func HandlerCreateRestriction(c echo.Context) error {
-	username := c.Param("username")
-	if len(username) <= 0 {
-		return c.JSON(http.StatusBadRequest, "invalid username")
+	email := c.Param("email")
+	if len(email) <= 0 {
+		return c.JSON(http.StatusBadRequest, "invalid email")
 	}
 
-	user, err := service.ServiceFindUser(username)
+	user, err := service.ServiceFindUser(email)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "GetUser error")
 	}
 
 	type Request struct {
-		Crontab     string `json:"frequency"`
-		Description string `json:"description"`
+		Name  string   `json:"nome"`
+		Days  []string `json:"dias"`
+		Start string   `json:"começa"`
+		End   string   `json:"termina"`
 	}
 
 	var request Request
@@ -32,7 +34,7 @@ func HandlerCreateRestriction(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
 
-	err = service.ServiceCreateRestriction(user.Id, request.Crontab, request.Description)
+	err = service.ServiceCreateRestriction(user.Id, request.Name, request.Start, request.End, request.Days)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "ServiceCreateEvent error")
 	}

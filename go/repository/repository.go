@@ -164,24 +164,26 @@ func CreateTask(userEmail string, estimateDuration, priority int, endDate time.T
 	return nil
 }
 
-func CreateRestriction(userId int, crontab, description string) error {
+func CreateRestriction(userId int, name, start, end string, days []string) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return err
 	}
 
-	query := `insert into public.restrictions
-	(frequency, description, user_id)
-	values($1, $2, $3);`
+	for _, day := range days {
+		query := `insert into public.restrictions
+		(name, day, start, end, user_id)
+		values($1, $2, $3, $4, $5);`
 
-	_, err = conn.Prepare(context.Background(), "ir", query)
-	if err != nil {
-		return err
-	}
+		_, err = conn.Prepare(context.Background(), "ir", query)
+		if err != nil {
+			return err
+		}
 
-	_, err = conn.Exec(context.Background(), "ir", crontab, description, userId)
-	if err != nil {
-		return err
+		_, err = conn.Exec(context.Background(), "ir", name, day, start, end, userId)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
