@@ -235,7 +235,7 @@ func CreateTask(userEmail, name string, estimateDuration, priority int, endDate 
 		return err
 	}
 
-	_, err = conn.Exec(context.Background(), "ie", estimateDuration, priority, endDate, userEmail)
+	_, err = conn.Exec(context.Background(), "ie", name, estimateDuration, priority, endDate, userEmail)
 	if err != nil {
 		return err
 	}

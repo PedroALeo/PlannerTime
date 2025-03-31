@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"plannertime/service"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -23,7 +25,7 @@ func CreateTask(c echo.Context) error {
 
 	type Body struct {
 		Name         string `json:"nome"`
-		TimeCoast    int    `json:"tempoEstimado"` // Formato: "HH:MM"
+		TimeCoast    string `json:"tempoEstimado"` // Formato: "HH:MM"
 		DeliveryDate string `json:"dataConclusao"` // Formato: "YYYY-MM-DD"
 		Priority     int    `json:"prioridade"`    // 1 (alta) a 5 (baixa)
 	}
@@ -34,8 +36,14 @@ func CreateTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "invalid body")
 	}
 
-	err = service.ServiceCreateTask(email, body.Name, body.DeliveryDate, body.TimeCoast, body.Priority)
+	tc, err := strconv.Atoi(body.TimeCoast)
 	if err != nil {
+		return c.JSON(http.StatusBadRequest, "invalid body")
+	}
+
+	err = service.ServiceCreateTask(email, body.Name, body.DeliveryDate, tc, body.Priority)
+	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "create task error")
 	}
 
