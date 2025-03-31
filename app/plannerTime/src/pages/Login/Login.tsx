@@ -11,6 +11,7 @@ function Login() {
     navigate("/signup");
   };
 
+
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
@@ -92,12 +93,12 @@ function Login() {
         </div>
         <div className="flex items-start mb-5">
           <div onClick={signupRedirect} className="flex items-center h-5 ">
-            <a className="text-blue-700 hover:bg-blue-800">Cadastre-se</a>
+            <a className="text-blue-700 hover:blue-990 cursor-pointer hover:underline">Cadastre-se</a>
           </div>
         </div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Submit
         </button>
