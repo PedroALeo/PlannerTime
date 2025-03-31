@@ -21,7 +21,7 @@ export default function PlannerTime() {
 
           {/* Right Column - Content */}
           <div className="order-1 md:order-2">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Bem Vindo de volta, Usuário!</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">Bem Vindo ao Planner Time</h1>
             <p className="text-gray-600 mb-8">
               Não perca tempo e continue agora o seu planejamento de atividades! Veja abaixo quais as suas tarefas que
               estão próximas do prazo final, mais detalhes na aba Atividades.
