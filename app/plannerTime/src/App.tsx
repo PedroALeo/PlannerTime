@@ -21,7 +21,7 @@ function App() {
             {path: "/restrictions", element: <Restrictions/>},
             {path: "/tasks", element: <Tasks/>},
             {path: "/signup", element: <SignUp/>},
-            {path: "/calendar", element: <Calendar/>}
+            {path: "/calendar", element: <Calendar/>},
           ],
           },
           { path: "*", element: <Navigate to="/lp" /> }

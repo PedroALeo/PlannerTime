@@ -6,18 +6,18 @@ import { useState } from "react"
 // Definição do tipo de atividade
 interface Atividade {
   nome: string
-  tempoEstimado: string // Formato: "HH:MM"
+  tempoEstimado: number // Formato: "HH:MM"
   dataConclusao: string // Formato: "YYYY-MM-DD"
   prioridade: number // 1 (alta) a 5 (baixa)
 }
 
 const AtividadeForm: React.FC = () => {
   const [nome, setNome] = useState<string>("")
-  const [tempoEstimado, setTempoEstimado] = useState<string>("")
+  const [tempoEstimado, setTempoEstimado] = useState<number>(0)
   const [dataConclusao, setDataConclusao] = useState<string>("")
   const [prioridade, setPrioridade] = useState<number>(3) // Prioridade média como padrão
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const novaAtividade: Atividade = {
       nome,
@@ -27,12 +27,29 @@ const AtividadeForm: React.FC = () => {
     }
 
     console.log("Nova Atividade:", novaAtividade)
-    // Enviar para o back-end se necessário
-    // fetch(`http://localhost:8080/createActivity`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(novaAtividade),
-    // });
+    
+    try {
+      const email = localStorage.getItem("email")
+
+      const response = await fetch(`http://localhost:8080/createTask/${email}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(novaAtividade),
+      });
+
+      if (!response.ok) {
+        console.log("creat task error");
+        throw new Error("cration failed. Please try again.");
+      }
+
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log("creat task error");
+      } else {
+        console.log("creat task error");
+      }
+    }
+
   }
 
   return (
@@ -79,14 +96,14 @@ const AtividadeForm: React.FC = () => {
 
             <div className="space-y-2">
               <label htmlFor="tempoEstimado" className="block text-sm font-medium text-gray-700">
-                Tempo Estimado:
+                Tempo Estimado (horas):
               </label>
               <div className="relative">
                 <input
                   id="tempoEstimado"
-                  type="time"
+                  type="text"
                   value={tempoEstimado}
-                  onChange={(e) => setTempoEstimado(e.target.value)}
+                  onChange={(e) => setTempoEstimado(Number.parseInt(e.target.value))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />

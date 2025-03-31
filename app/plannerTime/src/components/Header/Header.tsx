@@ -15,13 +15,13 @@ function Header() {
     }
   };
 
-  const TasksRedirect = () => {
-    navigate("/tasks");
-  };
+  // const TasksRedirect = () => {
+  //   navigate("/tasks");
+  // };
 
-  const RestrictionsRedirect = () => {
-    navigate("/restrictions");
-  };
+  // const RestrictionsRedirect = () => {
+  //   navigate("/restrictions");
+  // };
 
   const HandleButtonClick = () => {
     if (isLogged) {
@@ -41,7 +41,7 @@ function Header() {
             <span className="text-xl font-bold">Planner Time</span>
           </div>
           <nav className="hidden md:flex items-center gap-8 cursor-pointer">
-            <a
+            {/* <a
               onClick={HomeRedirect}
               hidden={isLoginPage}
               className="text-purple-700 hover:text-purple-900"
@@ -68,7 +68,7 @@ function Header() {
               className="text-gray-700 hover:text-gray-900 cursor-pointer"
             >
               Restrições
-            </a>
+            </a> */}
             <button
               onClick={HandleButtonClick}
               type="button"

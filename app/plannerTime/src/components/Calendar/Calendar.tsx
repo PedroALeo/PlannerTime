@@ -11,7 +11,7 @@ interface EventsProps {
 
 interface CalendarProps {
   events: EventsProps[]
-  onSelectDay: (day: string) => void
+  onSelectDay: (day: string | null) => void
 }
 
 interface EventDateMap {

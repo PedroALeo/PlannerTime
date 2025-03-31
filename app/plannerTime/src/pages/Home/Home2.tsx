@@ -17,37 +17,25 @@ interface Restriction {
 }
 
 function Home() {
-  // const [tasks, setTasks] = useState<Task[]>([]);
-  // const [restrictions, setRestrictions] = useState<Restriction[]>([]);
-  // const [loading, setLoading] = useState({ tasks: true, restrictions: true });
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [restrictions, setRestrictions] = useState<Restriction[]>([]);
+  const [loading, setLoading] = useState({ tasks: true, restrictions: true });
 
-  const priorityColors = [
-    {
-      id: 5,
-      label:"Muito baixa",
-      color:"border-green-100 bg-green-100" 
-    },
-    {
-      id: 4,
-      label:"Baixa", 
-      color:"border-green-200 bg-green-200" 
-    },
-    {
-      id: 3,
-      label:"Média", 
-      color:"border-yellow-100 bg-yellow-100" 
-    },
-    {
-      id: 2,
-      label:"Alta", 
-      color:"border-red-100 bg-red-100" 
-    },
-    {
-      id: 1,
-      label:"Urgênte",
-      color:"border-red-200 bg-red-200" 
-    },
-  ];
+  const priorityColors = {
+    5: "border-green-100 bg-green-50",
+    4: "border-green-200 bg-yellow-50",
+    3: "border-yellow-100 bg-yellow-50",
+    2: "border-yellow-200 bg-yellow-50",
+    1: "border-red-200 bg-red-50"
+  };
+
+  const priorityLabels = {
+    5: "Muito baixa",
+    4: "Baixa",
+    3: "Média",
+    2: "Alta",
+    1: "Urgênte"
+  };
 
   const restrictionsMocks = [
     {
@@ -94,37 +82,37 @@ function Home() {
     }
   ]
 
-  // useEffect(() => {
-  //   // Simulated API calls
-  //   const fetchTasks = async () => {
-  //     try {
-  //       // Replace with actual API endpoint
-  //       // const response = await fetch('https://api.example.com/tasks');
-  //       // const data = await response.json();
-  //       setTasks();
-  //       setLoading(prev => ({ ...prev, tasks: false }));
-  //     } catch (error) {
-  //       console.error('Error fetching tasks:', error);
-  //       setLoading(prev => ({ ...prev, tasks: false }));
-  //     }
-  //   };
+  useEffect(() => {
+    // Simulated API calls
+    const fetchTasks = async () => {
+      try {
+        // Replace with actual API endpoint
+        // const response = await fetch('https://api.example.com/tasks');
+        // const data = await response.json();
+        setTasks();
+        setLoading(prev => ({ ...prev, tasks: false }));
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+        setLoading(prev => ({ ...prev, tasks: false }));
+      }
+    };
 
-  //   const fetchRestrictions = async () => {
-  //     try {
-  //       // Replace with actual API endpoint
-  //       // const response = await fetch('https://api.example.com/restrictions');
-  //       // const data = await response.json();
-  //       setRestrictions();
-  //       setLoading(prev => ({ ...prev, restrictions: false }));
-  //     } catch (error) {
-  //       console.error('Error fetching restrictions:', error);
-  //       setLoading(prev => ({ ...prev, restrictions: false }));
-  //     }
-  //   };
+    const fetchRestrictions = async () => {
+      try {
+        // Replace with actual API endpoint
+        // const response = await fetch('https://api.example.com/restrictions');
+        // const data = await response.json();
+        setRestrictions();
+        setLoading(prev => ({ ...prev, restrictions: false }));
+      } catch (error) {
+        console.error('Error fetching restrictions:', error);
+        setLoading(prev => ({ ...prev, restrictions: false }));
+      }
+    };
 
-  //   fetchTasks();
-  //   fetchRestrictions();
-  // }, []);
+    fetchTasks();
+    fetchRestrictions();
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -141,12 +129,16 @@ function Home() {
             </div>
             
             <div className="p-6">
-            
+              {loading.tasks ? (
+                <div className="flex justify-center items-center py-8">
+                  <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                </div>
+              ) : tasks.length > 0 ? (
                 <div className="space-y-4">
-                  {tasksMocks.map((task) => (
+                  {tasks.map((task) => (
                     <div
                       key={task.id}
-                      className={`p-4 rounded-lg border ${priorityColors[task.priority].color} transition-all hover:shadow-md`}
+                      className={`p-4 rounded-lg border ${priorityColors[task.priority]} transition-all hover:shadow-md`}
                     >
                       <div className="flex justify-between items-start">
                         <div className="space-y-2">
@@ -162,7 +154,7 @@ function Home() {
                             </span>
                             <span className="flex items-center text-sm text-gray-500">
                               <AlertTriangle className="w-4 h-4 mr-1" />
-                              {priorityColors[task.priority].label}
+                              {priorityLabels[task.priority]}
                             </span>
                           </div>
                         </div>
@@ -173,6 +165,12 @@ function Home() {
                     </div>
                   ))}
                 </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Timer className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                  <p className="text-gray-500">Nenhuma tarefa pendente</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -186,8 +184,13 @@ function Home() {
             </div>
             
             <div className="p-6">
+              {loading.restrictions ? (
+                <div className="flex justify-center items-center py-8">
+                  <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                </div>
+              ) : restrictions.length > 0 ? (
                 <div className="space-y-4">
-                  {restrictionsMocks.map((restriction) => (
+                  {restrictions.map((restriction) => (
                     <div
                       key={restriction.id}
                       className="p-4 rounded-lg border bg-purple-50 border-purple-200 transition-all hover:shadow-md"
@@ -213,6 +216,12 @@ function Home() {
                     </div>
                   ))}
                 </div>
+              ) : (
+                <div className="text-center py-8">
+                  <CalendarClock className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                  <p className="text-gray-500">Nenhuma restrição cadastrada</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

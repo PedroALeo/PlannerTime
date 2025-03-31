@@ -141,27 +141,22 @@ func GetUserByEmail(email string) (*userEntity.User, error) {
 	return &user, nil
 }
 
-func CreateEvent(userId, estimateDuration, priority int, endDate, description string) error {
-	endDateTimestamp, err := time.Parse(time.DateTime, endDate)
-	if err != nil {
-		return err
-	}
-
+func CreateTask(userEmail string, estimateDuration, priority int, endDate time.Time) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return err
 	}
 
 	query := `insert into public.events
-	(duration, priority, end_timestamp, description, user_id)
-	values($1, $2, $3, $4, $5);`
+	(duration, priority, end_timestamp, user_email)
+	values($1, $2, $3, $4);`
 
 	_, err = conn.Prepare(context.Background(), "ie", query)
 	if err != nil {
 		return err
 	}
 
-	_, err = conn.Exec(context.Background(), "ie", estimateDuration, priority, endDateTimestamp, description, userId)
+	_, err = conn.Exec(context.Background(), "ie", estimateDuration, priority, endDate, userEmail)
 	if err != nil {
 		return err
 	}

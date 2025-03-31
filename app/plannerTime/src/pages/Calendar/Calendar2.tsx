@@ -13,7 +13,7 @@ function App() {
       description: "Estudar capítulos 5-8",
       date: "16/04",
       color: "bg-blue-50",
-      category: "Acadêmico"
+      category: "Acadêmico",
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ function App() {
       description: "Prazo final para emissão",
       date: "16/04",
       color: "bg-green-50",
-      category: "Financeiro"
+      category: "Financeiro",
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ function App() {
       description: "Água, luz e internet",
       date: "17/04",
       color: "bg-yellow-50",
-      category: "Financeiro"
+      category: "Financeiro",
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ function App() {
       description: "Implementar endpoints restantes",
       date: "18/04",
       color: "bg-purple-50",
-      category: "Trabalho"
+      category: "Trabalho",
     },
   ];
 
@@ -58,14 +58,14 @@ function App() {
       <div className="w-full max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Calendário</h1>
-          <p className="text-gray-600 mt-1">Gerencie seus eventos e compromissos</p>
+          <p className="text-gray-600 mt-1">
+            Gerencie seus eventos e compromissos
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {
-            <Calendar events={events} onSelectDay={handleSelectDay} />
-        }
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          {<Calendar events={events} onSelectDay={handleSelectDay} />}
+          <div hidden={true} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b px-6 py-4">
               <h2 className="text-xl text-gray-800 flex items-center">
                 <CalendarIcon className="h-5 w-5 mr-2 text-blue-600" />
@@ -74,11 +74,19 @@ function App() {
             </div>
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-medium text-gray-700">Abril 2024</h3>
+                <h3 className="text-lg font-medium text-gray-700">
+                  Abril 2024
+                </h3>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">Hoje</button>
-                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">&lt;</button>
-                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">&gt;</button>
+                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">
+                    Hoje
+                  </button>
+                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">
+                    &lt;
+                  </button>
+                  <button className="px-3 py-1 text-sm border rounded-md hover:bg-gray-50">
+                    &gt;
+                  </button>
                 </div>
               </div>
               <div className="flex justify-center">
@@ -92,7 +100,9 @@ function App() {
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b px-6 py-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl text-gray-800 flex items-center">
-                  {selectedDay ? `Eventos do dia ${selectedDay}/04` : "Próximos Eventos"}
+                  {selectedDay
+                    ? `Eventos do dia ${selectedDay}/04`
+                    : "Próximos Eventos"}
                 </h2>
                 {selectedDay && (
                   <button
@@ -104,7 +114,7 @@ function App() {
                 )}
               </div>
             </div>
-            
+
             <div className="p-6">
               {filteredEvents.length > 0 ? (
                 <div className="space-y-4">
@@ -115,8 +125,12 @@ function App() {
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-medium text-gray-900">{event.title}</h3>
-                          <p className="text-sm text-gray-600 mt-1">{event.description}</p>
+                          <h3 className="font-medium text-gray-900">
+                            {event.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {event.description}
+                          </p>
                           <div className="flex items-center mt-2 space-x-4">
                             <span className="flex items-center text-sm text-gray-500">
                               <Tag className="w-4 h-4 mr-1" />

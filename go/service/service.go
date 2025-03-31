@@ -3,6 +3,7 @@ package service
 import (
 	userEntity "plannertime/entity"
 	"plannertime/repository"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -75,8 +76,13 @@ func ServiceCreateUser(email, username, password string) error {
 	return nil
 }
 
-func ServiceCreateEvent(userId, EstimatedDuration, priority int, endDate, description string) error {
-	err := repository.CreateEvent(userId, EstimatedDuration, priority, endDate, description)
+func ServiceCreateTask(userEmail, endDate string, EstimatedDuration, priority int) error {
+	timeDate, err := time.Parse(time.DateOnly, endDate)
+	if err != nil {
+		return err
+	}
+
+	err = repository.CreateTask(userEmail, EstimatedDuration, priority, timeDate)
 	if err != nil {
 		return err
 	}

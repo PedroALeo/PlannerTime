@@ -31,7 +31,7 @@ func InitEcho() {
 	e.POST("/login", handlers.HandlerLogin)
 	//e.GET("/userScheduller/:username", handlers.Handle)
 
-	//e.POST("/createTask/:username", handlers)
+	e.POST("/createTask/:email", handlers.CreateTask)
 	//e.DELETE("/deleteTask/:eventId", handlers.Handler)
 	//e.PATCH("/updateTask", handlers.Up)
 	//e.

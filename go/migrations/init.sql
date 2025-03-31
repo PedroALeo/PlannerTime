@@ -13,10 +13,9 @@ create table if not exists events (
 	event_id bigserial not null,
 	duration integer not null,
 	end_timestamp timestamp not null,
-	description varchar(255),
 	priority integer,
-	user_id BIGINT NOT NULL,
-	constraint event_fk_user_id foreign key (user_id) references users(user_id)
+	user_email VARCHAR(255) NOT NULL,
+	constraint event_fk_user_id foreign key (user_email) references users(email)
 );
 
 create table if not exists restrictions (
