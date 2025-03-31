@@ -20,7 +20,7 @@ const RestricaoForm: React.FC = () => {
     setDiasDaSemana((prev) => (prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia]))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const novaRestricao: Restricao = {
       nome,
@@ -28,14 +28,34 @@ const RestricaoForm: React.FC = () => {
       horarioInicio,
       horarioFim,
     }
+    
+    if (novaRestricao.horarioFim > novaRestricao.horarioInicio) {
+      throw new Error("horarios invalidos");
+    }
 
-    console.log("Nova Restrição:", novaRestricao)
-    // Enviar para o back-end se necessário
-    // fetch(`http://localhost:8080/createRestriction`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(novaRestricao),
-    // });
+    try {
+      const email = localStorage.getItem("email")
+
+      const response = await fetch(`http://localhost:8080/createRestriction/${email}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(novaRestricao),
+      });
+
+      if (!response.ok) {
+        console.log("creat restriction error");
+        throw new Error("creation failed. Please try again.");
+      }
+
+      alert("restrição criada com sucesso!!")
+
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error);
+      } else {
+        alert("creat restriction error");
+      }
+    }
   }
 
   return (

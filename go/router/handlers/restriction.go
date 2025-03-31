@@ -22,9 +22,9 @@ func HandlerCreateRestriction(c echo.Context) error {
 
 	type Request struct {
 		Name  string   `json:"nome"`
-		Days  []string `json:"dias"`
-		Start string   `json:"começa"`
-		End   string   `json:"termina"`
+		Days  []string `json:"diasDaSemana"`
+		Start string   `json:"horarioInicio"`
+		End   string   `json:"horarioFim"`
 	}
 
 	var request Request
