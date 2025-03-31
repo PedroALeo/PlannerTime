@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	_ "plannertime/docs"
+	"plannertime/router/handlers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -22,18 +23,24 @@ func InitEcho() {
 	e.Use(middleware.CORS())
 
 	e.GET("/swagger*", echoswagger.WrapHandler)
-	e.GET("/getUser/:username", HandlerGetUser)
-	e.POST("/createUser", HandlerCreateUser)
-	e.PATCH("/updateUser", HandlerUpdateUser)
-	e.POST("/login", HandlerLogin)
-	e.POST("/createEvent/:username", HandlerCreateEvent)
-	e.DELETE("/deleteEvent/:eventId", HandlerDeleteEvent)
-	e.PATCH("/updateEvent", HandlerUpdateEvent)
-	e.POST("/createRestrictions/:username", HandlerCreateRestriction)
-	e.PATCH("/updateRestrictions/:username", HandlerUpdateRestriction)
-	e.DELETE("/deleteRestrictions/:username", HandlerDeleteRestriction)
-	e.GET("/userScheduller/:username", HandlerGetUserScheduller)
-	e.GET("/getRestrictions/:username", HandlerGetRests)
+
+	//USER
+	e.GET("/getUser/:email", handlers.HandlerGetUserByEmail)
+	e.POST("/createUser", handlers.HandlerCreateUser)
+	e.PATCH("/updateUser", handlers.HandlerUpdateUser)
+	e.POST("/login", handlers.HandlerLogin)
+	//e.GET("/userScheduller/:username", handlers.Handle)
+
+	//e.POST("/createTask/:username", handlers)
+	//e.DELETE("/deleteTask/:eventId", handlers.Handler)
+	//e.PATCH("/updateTask", handlers.Up)
+	//e.
+
+	//RESTRICTION
+	e.POST("/createRestrictions/:username", handlers.HandlerCreateRestriction)
+	e.PATCH("/updateRestrictions/:username", handlers.HandlerUpdateRestriction)
+	e.DELETE("/deleteRestrictions/:username", handlers.HandlerDeleteRestriction)
+	//e.GET("/getRestrictions/:username", handlers.)
 
 	for _, route := range e.Routes() {
 		fmt.Printf("Path: %s, Method: %s\n", route.Path, route.Method)

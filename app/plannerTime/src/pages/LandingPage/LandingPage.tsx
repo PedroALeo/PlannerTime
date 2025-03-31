@@ -2,7 +2,7 @@ import HomeImg from '../../../public/home.jpg'
 
 export default function PlannerTime() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-full w-full bg-gray-50 justify-center items-center flex">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-8 px-6">
         <div className="grid md:grid-cols-2 gap-8 items-center">

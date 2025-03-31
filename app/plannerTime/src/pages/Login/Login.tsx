@@ -16,11 +16,9 @@ function Login() {
     event.preventDefault();
     setError(null);
 
-    // Prepare the data to send
     const credentials = { email, password };
 
     try {
-      // Send a POST request to the login API
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: {
@@ -29,24 +27,16 @@ function Login() {
         body: JSON.stringify(credentials),
       });
 
-      // Check if the response is successful
       if (!response.ok) {
         console.log("login error");
         throw new Error("Login failed. Please try again.");
       }
 
-      // Parse the response body
-      const data = await response.json();
-
-      // Assuming the response contains a token
-      const token = data.token;
-
-      // Store the token in localStorage
-      localStorage.setItem("authToken", token);
       localStorage.setItem("email", email);
       localStorage.setItem("isLogged", "true");
 
-      navigate("/articles");
+      navigate("/home");
+
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -57,7 +47,7 @@ function Login() {
   };
 
   return (
-    <div className="pt-8">
+    <div className="pt-8 w-full min-h-full">
       <form onSubmit={login} className="max-w-sm mx-auto">
         <div className="mb-5">
           <label

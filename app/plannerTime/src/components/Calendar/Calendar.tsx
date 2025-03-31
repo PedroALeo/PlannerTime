@@ -1,16 +1,33 @@
-"use client"
 
-import { useState } from "react"
+import { JSX, useState } from "react"
 
-function Calendar({ events = [], onSelectDay }) {
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [selectedDay, setSelectedDay] = useState(null)
+interface EventsProps {
+  id: number
+  title: string
+  description: string
+  date: string
+  color: string
+}
+
+interface CalendarProps {
+  events: EventsProps[]
+  onSelectDay: (day: string) => void
+}
+
+interface EventDateMap {
+  [key: number]: EventsProps[]
+}
+
+function Calendar({ events, onSelectDay }: CalendarProps) {
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate()
+
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay()
 
   // Converter as datas dos eventos para o formato de comparação
-  const eventDates = events.reduce((acc, event) => {
+  const eventDates = events.reduce<EventDateMap>((acc, event) => {
     const [day, month] = event.date.split("/")
     // Assumindo que estamos no mês 4 (abril) para o exemplo
     const currentMonthNumber = 4
@@ -29,18 +46,18 @@ function Calendar({ events = [], onSelectDay }) {
     return acc
   }, {})
 
-  const handleDayClick = (day) => {
+  const handleDayClick = (day: number) => {
     // Se o dia já está selecionado, desseleciona
     if (selectedDay === day) {
       setSelectedDay(null)
       onSelectDay(null)
     } else {
       setSelectedDay(day)
-      onSelectDay(day)
+      onSelectDay(day.toString())
     }
   }
 
-  const days = []
+  const days: JSX.Element[] = []
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push(<div key={`empty-${i}`} className="h-10 w-10"></div>)
   }
@@ -147,3 +164,4 @@ function Calendar({ events = [], onSelectDay }) {
 }
 
 export default Calendar
+
