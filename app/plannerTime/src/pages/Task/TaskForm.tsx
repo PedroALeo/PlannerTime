@@ -6,14 +6,14 @@ import { useState } from "react"
 // Definição do tipo de atividade
 interface Atividade {
   nome: string
-  tempoEstimado: number // Formato: "HH:MM"
+  tempoEstimado: string // Formato: "HH:MM"
   dataConclusao: string // Formato: "YYYY-MM-DD"
   prioridade: number // 1 (alta) a 5 (baixa)
 }
 
 const AtividadeForm: React.FC = () => {
   const [nome, setNome] = useState<string>("")
-  const [tempoEstimado, setTempoEstimado] = useState<number>(0)
+  const [tempoEstimado, setTempoEstimado] = useState<string>("")
   const [dataConclusao, setDataConclusao] = useState<string>("")
   const [prioridade, setPrioridade] = useState<number>(3) // Prioridade média como padrão
 
@@ -103,7 +103,7 @@ const AtividadeForm: React.FC = () => {
                   id="tempoEstimado"
                   type="text"
                   value={tempoEstimado}
-                  onChange={(e) => setTempoEstimado(Number.parseInt(e.target.value))}
+                  onChange={(e) => setTempoEstimado(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
