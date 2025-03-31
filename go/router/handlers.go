@@ -60,8 +60,8 @@ func HandlerDeleteEvent(c echo.Context) error {
 }
 
 type LoginBody struct {
-	Email    string `json:"email"`
 	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -82,7 +82,7 @@ func HandlerLogin(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "invalid body")
 	}
 
-	ok, err := service.ServiceLogin(body.Username, body.Password)
+	ok, err := service.ServiceLogin(body.Email, body.Password)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "ServiceLogin error")
 	}

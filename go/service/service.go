@@ -47,8 +47,8 @@ func ServiceGetUserScheduller(userId int) ([]repository.Event, error) {
 	return events, nil
 }
 
-func ServiceLogin(username, password string) (bool, error) {
-	user, err := ServiceFindUser(username)
+func ServiceLogin(email, password string) (bool, error) {
+	user, err := ServiceFindUser(email)
 	if err != nil {
 		return false, err
 	}
@@ -111,8 +111,8 @@ func ServiceDeleteRestriction(userId int) error {
 	return nil
 }
 
-func ServiceFindUser(username string) (userEntity.User, error) {
-	user, err := repository.GetUser(username)
+func ServiceFindUser(email string) (userEntity.User, error) {
+	user, err := repository.GetUserByEmail(email)
 	if err != nil {
 		return userEntity.User{}, err
 	}
