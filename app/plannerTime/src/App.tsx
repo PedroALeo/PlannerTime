@@ -6,6 +6,7 @@ import Login from './pages/Login/Login.tsx'
 import Restrictions from './pages/Restrictions/Restrictions.tsx'
 import Tasks from './pages/Task/TaskForm.tsx'
 import SignUp from './pages/SignUp/SignUp.tsx'
+import Calendar from './pages/Calendar/Calendar.tsx'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
             {path: "/restrictions", element: <Restrictions/>},
             {path: "/tasks", element: <Tasks/>},
             {path: "/signup", element: <SignUp/>},
+            {path: "/calendar", element: <Calendar/>}
             //{path: "/articles", element: <Articles />},
             //{path: "/article", element: <Article />},
             //{path: "/newArticle", element: <NewArticle />},
