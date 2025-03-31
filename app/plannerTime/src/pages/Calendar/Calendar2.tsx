@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import { Calendar as CalendarIcon, Plus, Clock, Tag } from "lucide-react";
 import Calendar from "../../components/Calendar/Calendar";
 
 function App() {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Lista de eventos com suas datas
   const events = [
@@ -51,6 +53,10 @@ function App() {
 
   const handleSelectDay = (day: string | null) => {
     if (day !== null) setSelectedDay(day);
+  };
+
+  const handleAddEvent = () => {
+    navigate('/tasks');
   };
 
   return (
@@ -158,7 +164,7 @@ function App() {
               )}
 
               <div className="mt-6">
-                <button className="w-full flex items-center justify-center py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <button onClick={handleAddEvent} className="w-full flex items-center justify-center py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                   <Plus className="h-4 w-4 mr-2" />
                   Adicionar Novo Evento
                 </button>
