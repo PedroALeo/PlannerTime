@@ -1,10 +1,12 @@
 import { useState } from "react"
-import Footer from "../../components/Calendar/Footer.jsx"
+import Footer from "../../components/Calendar/Footer.tsx"
 import Calendar from "../../components/Calendar/Calendar.jsx"
 import Card from "../../components/Calendar/Card.jsx"
+import { useNavigate } from "react-router-dom"
 
 function CalendarPage() {
     const [selectedDay, setSelectedDay] = useState(null)
+    const navigate = useNavigate()
   
     // Lista de eventos com suas datas
     const events = [
@@ -49,6 +51,11 @@ function CalendarPage() {
     const handleSelectDay = (day) => {
       setSelectedDay(day)
     }
+
+    const TasksRedirect = () => {
+      navigate('/tasks')
+   
+ } 
   
     return (
       <div className="min-h-screen flex flex-col">
@@ -98,7 +105,7 @@ function CalendarPage() {
                 )}
   
                 <div className="mt-4">
-                  <button className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-sm font-medium">
+                  <button  onClick={TasksRedirect} className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-sm font-medium">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
