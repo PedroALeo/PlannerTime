@@ -29,7 +29,7 @@ const RestricaoForm: React.FC = () => {
       horarioFim,
     }
     
-    if (novaRestricao.horarioFim > novaRestricao.horarioInicio) {
+    if (novaRestricao.horarioFim < novaRestricao.horarioInicio) {
       throw new Error("horarios invalidos");
     }
 

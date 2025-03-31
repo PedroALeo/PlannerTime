@@ -22,8 +22,8 @@ create table if not exists restrictions (
 	restriction_id bigserial not null,
 	name varchar(255),
 	day varchar(255),
-	start_hour integer,
-	end_hour integer,
+	start_hour text,
+	end_hour text,
 	user_id BIGINT NOT NULL,
 	constraint restriction_fk_user_id foreign key (user_id) references users(user_id)
 );

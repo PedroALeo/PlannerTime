@@ -172,7 +172,7 @@ func CreateRestriction(userId int, name, start, end string, days []string) error
 
 	for _, day := range days {
 		query := `insert into public.restrictions
-		(name, day, start, end, user_id)
+		(name, day, start_hour, end_hour, user_id)
 		values($1, $2, $3, $4, $5);`
 
 		_, err = conn.Prepare(context.Background(), "ir", query)
