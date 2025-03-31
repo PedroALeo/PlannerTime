@@ -1,19 +1,18 @@
-"use client"
+import React, { useState } from "react"
 
-import type React from "react"
-import { useState } from "react"
-
-// Definição do tipo de restrição
+// Updated interface to include start and end times
 interface Restricao {
   nome: string
-  diasDaSemana: string[] // Dias da semana em que a restrição se aplica
-  horario: string // Horário da restrição (ex: "14:00")
+  diasDaSemana: string[]
+  horarioInicio: string
+  horarioFim: string
 }
 
 const RestricaoForm: React.FC = () => {
   const [nome, setNome] = useState<string>("")
   const [diasDaSemana, setDiasDaSemana] = useState<string[]>([])
-  const [horario, setHorario] = useState<string>("")
+  const [horarioInicio, setHorarioInicio] = useState<string>("")
+  const [horarioFim, setHorarioFim] = useState<string>("")
 
   const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 
@@ -26,7 +25,8 @@ const RestricaoForm: React.FC = () => {
     const novaRestricao: Restricao = {
       nome,
       diasDaSemana,
-      horario,
+      horarioInicio,
+      horarioFim,
     }
 
     console.log("Nova Restrição:", novaRestricao)
@@ -40,7 +40,6 @@ const RestricaoForm: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-
       <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b px-6 py-4">
           <h2 className="text-xl text-gray-800 flex items-center">
@@ -98,31 +97,62 @@ const RestricaoForm: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="horario" className="block text-sm font-medium text-gray-700">
-                Horário da Restrição:
+              <label className="block text-sm font-medium text-gray-700">
+                Intervalo de Horário:
               </label>
-              <div className="relative">
-                <input
-                  id="horario"
-                  type="time"
-                  value={horario}
-                  onChange={(e) => setHorario(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-                <svg
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="relative">
+                  <label htmlFor="horarioInicio" className="block text-sm text-gray-600 mb-1">
+                    Início
+                  </label>
+                  <input
+                    id="horarioInicio"
+                    type="time"
+                    value={horarioInicio}
+                    onChange={(e) => setHorarioInicio(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                  <svg
+                    className="absolute right-3 top-[60%] transform -translate-y-1/2 h-4 w-4 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div className="relative">
+                  <label htmlFor="horarioFim" className="block text-sm text-gray-600 mb-1">
+                    Fim
+                  </label>
+                  <input
+                    id="horarioFim"
+                    type="time"
+                    value={horarioFim}
+                    onChange={(e) => setHorarioFim(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                  <svg
+                    className="absolute right-3 top-[60%] transform -translate-y-1/2 h-4 w-4 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
               </div>
             </div>
 
@@ -140,4 +170,3 @@ const RestricaoForm: React.FC = () => {
 }
 
 export default RestricaoForm
-
