@@ -3,6 +3,7 @@ package router
 import (
 	"encoding/json"
 	"net/http"
+	userEntity "plannertime/entity"
 	"plannertime/repository"
 	"plannertime/service"
 	"strconv"
@@ -59,6 +60,7 @@ func HandlerDeleteEvent(c echo.Context) error {
 }
 
 type LoginBody struct {
+	Email    string `json:"email"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -267,7 +269,6 @@ func HandlerDeleteRestriction(c echo.Context) error {
 	return c.JSON(http.StatusOK, "ok")
 }
 
-
 func HandlerGetUser(c echo.Context) error {
 	username := c.Param("username")
 	if len(username) <= 0 {
@@ -311,6 +312,7 @@ func HandlerUpdateUser(c echo.Context) error {
 func HandlerCreateUser(c echo.Context) error {
 	type Request struct {
 		Username string `json:"username"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 
@@ -321,7 +323,7 @@ func HandlerCreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
 
-	err = service.ServiceCreateUser(request.Username, request.Password)
+	err = service.ServiceCreateUser(request.Email, request.Username, request.Password)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "createUser error")
 	}

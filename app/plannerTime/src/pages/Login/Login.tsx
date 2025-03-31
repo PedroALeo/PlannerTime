@@ -1,15 +1,63 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-    const navigate = useNavigate();
-  
-    const signupRedirect = () => {
-          navigate('/signup')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const signupRedirect = () => {
+    navigate("/signup");
+  };
+
+  const login = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+
+    // Prepare the data to send
+    const credentials = { email, password };
+
+    try {
+      // Send a POST request to the login API
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      // Check if the response is successful
+      if (!response.ok) {
+        console.log("login error");
+        throw new Error("Login failed. Please try again.");
+      }
+
+      // Parse the response body
+      const data = await response.json();
+
+      // Assuming the response contains a token
+      const token = data.token;
+
+      // Store the token in localStorage
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("email", email);
+      localStorage.setItem("isLogged", "true");
+
+      navigate("/articles");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
+  };
 
   return (
     <div className="pt-8">
-      <form className="max-w-sm mx-auto">
+      <form onSubmit={login} className="max-w-sm mx-auto">
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -22,6 +70,7 @@ function Login() {
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="your@email.com"
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -36,6 +85,7 @@ function Login() {
             type="password"
             id="password"
             placeholder="yourPassword"
+            onChange={(e) => setPassword(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
@@ -51,6 +101,7 @@ function Login() {
         >
           Submit
         </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );

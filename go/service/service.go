@@ -61,13 +61,13 @@ func ServiceLogin(username, password string) (bool, error) {
 	return true, nil
 }
 
-func ServiceCreateUser(username, password string) error {
+func ServiceCreateUser(email, username, password string) error {
 	hashPass, err := bcrypt.GenerateFromPassword([]byte(password), 4)
 	if err != nil {
 		return err
 	}
 
-	err = repository.CreateUser(username, string(hashPass))
+	err = repository.CreateUser(email, username, string(hashPass))
 	if err != nil {
 		return err
 	}
