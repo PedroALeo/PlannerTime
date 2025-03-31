@@ -47,7 +47,7 @@ function Login() {
   };
 
   return (
-    <div className="pt-8">
+    <div className="pt-8 w-full min-h-full">
       <form onSubmit={login} className="max-w-sm mx-auto">
         <div className="mb-5">
           <label

@@ -1,18 +1,18 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage.tsx'
 //import ProfilePage from './pages/Profile/ProfilePage.tsx'
-import Header from './components/Header/Header.tsx'
-import Login from './pages/Login/Login.tsx'
+    import Login from './pages/Login/Login.tsx'
 import Restrictions from './pages/Restrictions/Restrictions.tsx'
 import Tasks from './pages/Task/TaskForm.tsx'
 import SignUp from './pages/SignUp/SignUp.tsx'
-import Calendar from './pages/Calendar/Calendar.tsx'
+import Calendar from './pages/Calendar/Calendar2.tsx'
 import Home from './pages/Home/Home.tsx'
+import Layout from './components/Layout.tsx';
 
 function App() {
 
         const routes = [{
-          element: <Header />,
+          element: <Layout />,
           children: [
             {path: "/lp", element: <LandingPage />},
             {path: "/home", element: <Home />},
