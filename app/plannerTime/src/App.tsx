@@ -3,6 +3,8 @@ import LandingPage from './pages/LandingPage/LandingPage.tsx'
 //import ProfilePage from './pages/Profile/ProfilePage.tsx'
 import Header from './components/Header/Header.tsx'
 import Login from './pages/Login/Login.tsx'
+import Restrictions from './pages/Restrictions/Restrictions.tsx'
+import Tasks from './pages/Task/TaskForm.tsx'
 
 function App() {
 
@@ -12,6 +14,8 @@ function App() {
             {path: "/lp", element: <LandingPage />},
             {path: "/login", element: <Login />},
             //{path: "/profile", element: <ProfilePage />},
+            {path: "/restrictions", element: <Restrictions/>},
+            {path: "/tasks", element: <Tasks/>},
             //{path: "/articles", element: <Articles />},
             //{path: "/article", element: <Article />},
             //{path: "/newArticle", element: <NewArticle />},

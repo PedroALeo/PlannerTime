@@ -1,0 +1,143 @@
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+
+// Definição do tipo de restrição
+interface Restricao {
+  nome: string
+  diasDaSemana: string[] // Dias da semana em que a restrição se aplica
+  horario: string // Horário da restrição (ex: "14:00")
+}
+
+const RestricaoForm: React.FC = () => {
+  const [nome, setNome] = useState<string>("")
+  const [diasDaSemana, setDiasDaSemana] = useState<string[]>([])
+  const [horario, setHorario] = useState<string>("")
+
+  const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+
+  const handleDiaSelecionado = (dia: string) => {
+    setDiasDaSemana((prev) => (prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia]))
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const novaRestricao: Restricao = {
+      nome,
+      diasDaSemana,
+      horario,
+    }
+
+    console.log("Nova Restrição:", novaRestricao)
+    // Enviar para o back-end se necessário
+    // fetch(`http://localhost:8080/createRestriction`, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(novaRestricao),
+    // });
+  }
+
+  return (
+    <div className="container mx-auto py-8 px-4">
+
+      <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b px-6 py-4">
+          <h2 className="text-xl text-gray-800 flex items-center">
+            <svg
+              className="h-5 w-5 mr-2 text-blue-600"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Cadastrar Restrição
+          </h2>
+        </div>
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
+                Nome da Restrição:
+              </label>
+              <input
+                id="nome"
+                type="text"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Ex: Reunião semanal"
+                required
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">Dias da Semana:</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {dias.map((dia) => (
+                  <div key={dia} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`dia-${dia}`}
+                      checked={diasDaSemana.includes(dia)}
+                      onChange={() => handleDiaSelecionado(dia)}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor={`dia-${dia}`} className="text-sm text-gray-700 cursor-pointer">
+                      {dia}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="horario" className="block text-sm font-medium text-gray-700">
+                Horário da Restrição:
+              </label>
+              <div className="relative">
+                <input
+                  id="horario"
+                  type="time"
+                  value={horario}
+                  onChange={(e) => setHorario(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+                <svg
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Cadastrar Restrição
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default RestricaoForm
+

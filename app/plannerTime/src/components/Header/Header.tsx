@@ -16,6 +16,16 @@ function Header() {
     }
   }  
 
+  const TasksRedirect = () => {
+       navigate('/tasks')
+    
+  }  
+
+  const RestrictionsRedirect = () => {
+    navigate('/restrictions')
+ 
+}  
+
   const HandleButtonClick = () => {
     if (isLogged) {
       localStorage.setItem("isLogged", "false");
@@ -23,7 +33,9 @@ function Header() {
     } else {
       navigate("/login");
     }
+
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,10 +53,10 @@ function Header() {
             <a href="#" hidden={isLoginPage} className="text-gray-700 hover:text-gray-900">
               Calendário
             </a>
-            <a href="#" hidden={isLoginPage} className="text-gray-700 hover:text-gray-900">
+            <a href="#" onClick={TasksRedirect} hidden={isLoginPage} className="text-gray-700 hover:text-gray-900">
               Atividades
             </a>
-            <a href="#" hidden={isLoginPage} className="text-gray-700 hover:text-gray-900">
+            <a href="#" onClick={RestrictionsRedirect} hidden={isLoginPage} className="text-gray-700 hover:text-gray-900">
               Restrições
             </a>
             <button
