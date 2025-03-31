@@ -10,7 +10,7 @@ function Header() {
   const HomeRedirect = () => {
     if (isLogged) {
         // change this to home page when build
-        navigate('/lp')
+        navigate('/home')
     } else {
         navigate('/lp')
     }
@@ -29,7 +29,7 @@ function Header() {
   const HandleButtonClick = () => {
     if (isLogged) {
       localStorage.setItem("isLogged", "false");
-      window.location.reload();
+      navigate('/lp')
     } else {
       navigate("/login");
     }
