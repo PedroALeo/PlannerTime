@@ -94,13 +94,13 @@ func ServiceCreateUser(email, username, password string) error {
 	return nil
 }
 
-func ServiceCreateTask(userEmail, endDate string, EstimatedDuration, priority int) error {
+func ServiceCreateTask(userEmail, name, endDate string, EstimatedDuration, priority int) error {
 	timeDate, err := time.Parse(time.DateOnly, endDate)
 	if err != nil {
 		return err
 	}
 
-	err = repository.CreateTask(userEmail, EstimatedDuration, priority, timeDate)
+	err = repository.CreateTask(userEmail, name, EstimatedDuration, priority, timeDate)
 	if err != nil {
 		return err
 	}

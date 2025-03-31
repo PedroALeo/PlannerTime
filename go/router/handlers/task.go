@@ -34,7 +34,7 @@ func CreateTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "invalid body")
 	}
 
-	err = service.ServiceCreateTask(email, body.DeliveryDate, body.TimeCoast, body.Priority)
+	err = service.ServiceCreateTask(email, body.Name, body.DeliveryDate, body.TimeCoast, body.Priority)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "create task error")
 	}

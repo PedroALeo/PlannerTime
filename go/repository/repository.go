@@ -141,29 +141,29 @@ func DeleteEvent(eventId int) error {
 }
 
 func GetRest(userId int) ([]Restriction, error) {
-	conn, err := db.ConnectToDatabase()
-	if err != nil {
-		return nil, err
-	}
+	//conn, err := db.ConnectToDatabase()
+	//if err != nil {
+	//	return nil, err
+	//}
 
-	restrictionsQuery := `select restriction_id, description, frequency from public.restrictions where user_id = $1`
+	//restrictionsQuery := `select restriction_id, description, frequency from public.restrictions where user_id = $1`
 
-	rows, err := conn.Query(context.Background(), restrictionsQuery, userId)
-	if err != nil {
-		return nil, err
-	}
+	//rows, err := conn.Query(context.Background(), restrictionsQuery, userId)
+	//if err != nil {
+	//	return nil, err
+	//}
 
-	var rests []Restriction
-	for rows.Next() {
-		var rest Restriction
-		if err := rows.Scan(&rest.Id, &rest.Description, &rest.Frequency); err != nil {
-			return nil, err
-		}
+	//var rests []Restriction
+	//for rows.Next() {
+	//	var rest Restriction
+	//	if err := rows.Scan(&rest.Id, &rest.Description, &rest.Frequency); err != nil {
+	//		return nil, err
+	//	}
 
-		rests = append(rests, rest)
-	}
+	//	rests = append(rests, rest)
+	//}
 
-	return rests, nil
+	return nil, nil
 }
 
 func GetEventsAndRestrictions(userId int) ([]Event, error) {
@@ -251,7 +251,7 @@ func CreateRestriction(userId int, name, start, end string, days []string) error
 
 	for _, day := range days {
 		query := `insert into public.restrictions
-		(name, day, start, end, user_id)
+		(name, day, start_hour, end_hour, user_id)
 		values($1, $2, $3, $4, $5);`
 
 		_, err = conn.Prepare(context.Background(), "ir", query)
