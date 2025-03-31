@@ -115,17 +115,17 @@ func GetEventsAndRestrictions(userId int) ([]Event, error) {
 	return events, nil
 }
 
-func GetUser(username string) (*userEntity.User, error) {
+func GetUserByEmail(email string) (*userEntity.User, error) {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return nil, err
 	}
 
-	query := `select * from public.users where username = $1`
+	query := `select user_id, email, username, password from public.users where email = $1`
 
 	conn.Prepare(context.Background(), "su", query)
 
-	rows, err := conn.Query(context.Background(), "su", username)
+	rows, err := conn.Query(context.Background(), "su", email)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func GetUser(username string) (*userEntity.User, error) {
 	var user userEntity.User
 
 	for rows.Next() {
-		if err := rows.Scan(&user.Id, &user.Username, &user.Password); err != nil {
+		if err := rows.Scan(&user.Id, &user.Email, &user.Username, &user.Password); err != nil {
 			return nil, err
 		}
 	}
