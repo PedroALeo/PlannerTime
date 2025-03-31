@@ -7,6 +7,7 @@ import Restrictions from './pages/Restrictions/Restrictions.tsx'
 import Tasks from './pages/Task/TaskForm.tsx'
 import SignUp from './pages/SignUp/SignUp.tsx'
 import Calendar from './pages/Calendar/Calendar.tsx'
+import Home from './pages/Home/Home.tsx'
 
 function App() {
 
@@ -14,16 +15,13 @@ function App() {
           element: <Header />,
           children: [
             {path: "/lp", element: <LandingPage />},
+            {path: "/home", element: <Home />},
             {path: "/login", element: <Login />},
             //{path: "/profile", element: <ProfilePage />},
             {path: "/restrictions", element: <Restrictions/>},
             {path: "/tasks", element: <Tasks/>},
             {path: "/signup", element: <SignUp/>},
             {path: "/calendar", element: <Calendar/>}
-            //{path: "/articles", element: <Articles />},
-            //{path: "/article", element: <Article />},
-            //{path: "/newArticle", element: <NewArticle />},
-            //{path: "/editArticle", element: <EditArticle />}
           ],
           },
           { path: "*", element: <Navigate to="/lp" /> }
