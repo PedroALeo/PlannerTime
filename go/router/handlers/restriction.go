@@ -9,6 +9,25 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func GetRestrictions(c echo.Context) error {
+	email := c.Param("email")
+	if len(email) <= 0 {
+		return c.JSON(http.StatusBadRequest, "invalid email")
+	}
+
+	user, err := service.ServiceFindUser(email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "GetUser error")
+	}
+
+	rs, err := service.ServiceGetRestrictions(user.Id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "ServiceCreateEvent error")
+	}
+
+	return c.JSON(http.StatusOK, rs)
+}
+
 func HandlerCreateRestriction(c echo.Context) error {
 	email := c.Param("email")
 	if len(email) <= 0 {

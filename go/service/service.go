@@ -10,6 +10,24 @@ import (
 
 type restrictions struct{}
 
+func ServiceGetRestrictions(userId int) ([]repository.Restriction, error) {
+	rs, err := repository.GetRestrictions(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return rs, nil
+}
+
+func ServiceGetTasks(email string) ([]repository.Task, error) {
+	rs, err := repository.GetTasks(email)
+	if err != nil {
+		return nil, err
+	}
+
+	return rs, nil
+}
+
 func ServiceDeleteEvent(eventId int) error {
 	err := repository.DeleteEvent(eventId)
 	if err != nil {

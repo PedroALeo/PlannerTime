@@ -5,6 +5,8 @@ import (
 	"log"
 	"plannertime/db"
 	"plannertime/entity"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -16,10 +18,87 @@ type Event struct {
 	Priority    int       `json:"priority"`
 }
 
+type Task struct {
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Duration int    `json:"estimatedTime"`
+	Priority int    `json:"priority"`
+	End      string `json:"dueDate"`
+}
+
 type Restriction struct {
-	Id          int    `json:"restrictionId"`
-	Frequency   string `json:"frequency"`
-	Description string `json:"description"`
+	Id       int    `json:"id"`
+	Name     int    `json:"name"`
+	Duration string `json:"duration"`
+	Day      string `json:"weekDay"`
+}
+
+func GetTasks(email string) ([]Task, error) {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return nil, err
+	}
+
+	tasksQuery := `select task_id, name, duration, priority, end_timestamp from public.tasks where user_email = $1`
+
+	rows, err := conn.Query(context.Background(), tasksQuery, email)
+	if err != nil {
+		return nil, err
+	}
+
+	var rs []Task
+	for rows.Next() {
+		var r Task
+		var ed time.Time
+		if err := rows.Scan(&r.Id, &r.Name, &r.Duration, r.Priority, &ed); err != nil {
+			return nil, err
+		}
+
+		r.End = strings.Split(ed.String(), " ")[0]
+
+		rs = append(rs, r)
+	}
+
+	return rs, nil
+}
+
+func GetRestrictions(userId int) ([]Restriction, error) {
+	conn, err := db.ConnectToDatabase()
+	if err != nil {
+		return nil, err
+	}
+
+	eventsQuery := `select restriction_id, name, day, start_hour, end_hour from public.restrictions where user_id = $1`
+
+	rows, err := conn.Query(context.Background(), eventsQuery, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	var rs []Restriction
+	for rows.Next() {
+		var r Restriction
+		var sh, eh string
+		if err := rows.Scan(&r.Id, &r.Name, &r.Day, &sh, &eh); err != nil {
+			return nil, err
+		}
+
+		shi, err := strconv.Atoi(strings.Split(sh, ":")[0])
+		if err != nil {
+			return nil, err
+		}
+
+		ehi, err := strconv.Atoi(strings.Split(eh, ":")[0])
+		if err != nil {
+			return nil, err
+		}
+
+		r.Duration = strconv.Itoa(ehi - shi)
+
+		rs = append(rs, r)
+	}
+
+	return rs, nil
 }
 
 func UpdateEvent(event Event) error {
@@ -141,15 +220,15 @@ func GetUserByEmail(email string) (*userEntity.User, error) {
 	return &user, nil
 }
 
-func CreateTask(userEmail string, estimateDuration, priority int, endDate time.Time) error {
+func CreateTask(userEmail, name string, estimateDuration, priority int, endDate time.Time) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return err
 	}
 
-	query := `insert into public.events
-	(duration, priority, end_timestamp, user_email)
-	values($1, $2, $3, $4);`
+	query := `insert into public.tasks
+	(name, duration, priority, end_timestamp, user_email)
+	values($1, $2, $3, $4, $5);`
 
 	_, err = conn.Prepare(context.Background(), "ie", query)
 	if err != nil {

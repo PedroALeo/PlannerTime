@@ -9,11 +9,12 @@ CREATE TABLE IF NOT EXISTS users (
 	profile_picture TEXT
 );
 
-create table if not exists events (
-	event_id bigserial not null,
-	duration integer not null,
-	end_timestamp timestamp not null,
+create table if not exists tasks (
+	task_id bigserial not null,
+	name text not null,
+	duration integer,
 	priority integer,
+	end_timestamp timestamp not null,
 	user_email VARCHAR(255) NOT NULL,
 	constraint event_fk_user_id foreign key (user_email) references users(email)
 );

@@ -32,14 +32,16 @@ func InitEcho() {
 	//e.GET("/userScheduller/:username", handlers.Handle)
 
 	e.POST("/createTask/:email", handlers.CreateTask)
+	e.GET("/getTasks/:email", handlers.GetTasks)
 	//e.DELETE("/deleteTask/:eventId", handlers.Handler)
 	//e.PATCH("/updateTask", handlers.Up)
 	//e.
 
 	//RESTRICTION
 	e.POST("/createRestriction/:username", handlers.HandlerCreateRestriction)
-	e.PATCH("/updateRestrictions/:username", handlers.HandlerUpdateRestriction)
-	e.DELETE("/deleteRestrictions/:username", handlers.HandlerDeleteRestriction)
+	e.GET("/getRestrictions/:email", handlers.GetRestrictions)
+	//e.PATCH("/updateRestrictions/:username", handlers.HandlerUpdateRestriction)
+	//e.DELETE("/deleteRestrictions/:username", handlers.HandlerDeleteRestriction)
 	//e.GET("/getRestrictions/:username", handlers.)
 
 	for _, route := range e.Routes() {

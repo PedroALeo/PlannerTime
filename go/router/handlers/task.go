@@ -7,6 +7,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func GetTasks(c echo.Context) error {
+	email := c.Param("email")
+
+	ts, err := service.ServiceGetTasks(email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "get tasks error")
+	}
+
+	return c.JSON(http.StatusOK, ts)
+}
+
 func CreateTask(c echo.Context) error {
 	email := c.Param("email")
 
