@@ -38,7 +38,7 @@ func InitEcho() {
 	//e.
 
 	//RESTRICTION
-	e.POST("/createRestriction/:username", handlers.HandlerCreateRestriction)
+	e.POST("/createRestriction/:email", handlers.HandlerCreateRestriction)
 	e.GET("/getRestrictions/:email", handlers.GetRestrictions)
 	//e.PATCH("/updateRestrictions/:username", handlers.HandlerUpdateRestriction)
 	//e.DELETE("/deleteRestrictions/:username", handlers.HandlerDeleteRestriction)
