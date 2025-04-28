@@ -27,10 +27,10 @@ type Task struct {
 }
 
 type Restriction struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	Duration string `json:"duration"`
-	Day      string `json:"weekDay"`
+	Id       int      `json:"id"`
+	Name     string   `json:"name"`
+	Duration string   `json:"duration"`
+	Days     []string `json:"weekDay"`
 }
 
 func GetTasks(email string) ([]Task, error) {
@@ -68,7 +68,7 @@ func GetRestrictions(userId int) ([]Restriction, error) {
 		return nil, err
 	}
 
-	eventsQuery := `select restriction_id, name, day, start_hour, end_hour from public.restrictions where user_id = $1`
+	eventsQuery := `select restriction_id, name, days, start_hour, end_hour from public.restrictions where user_id = $1`
 
 	rows, err := conn.Query(context.Background(), eventsQuery, userId)
 	if err != nil {
@@ -79,7 +79,7 @@ func GetRestrictions(userId int) ([]Restriction, error) {
 	for rows.Next() {
 		var r Restriction
 		var sh, eh string
-		if err := rows.Scan(&r.Id, &r.Name, &r.Day, &sh, &eh); err != nil {
+		if err := rows.Scan(&r.Id, &r.Name, &r.Days, &sh, &eh); err != nil {
 			return nil, err
 		}
 
@@ -249,20 +249,18 @@ func CreateRestriction(userId int, name, start, end string, days []string) error
 		return err
 	}
 
-	for _, day := range days {
-		query := `insert into public.restrictions
-		(name, day, start_hour, end_hour, user_id)
+	query := `insert into public.restrictions
+		(name, days, start_hour, end_hour, user_id)
 		values($1, $2, $3, $4, $5);`
 
-		_, err = conn.Prepare(context.Background(), "ir", query)
-		if err != nil {
-			return err
-		}
+	_, err = conn.Prepare(context.Background(), "ir", query)
+	if err != nil {
+		return err
+	}
 
-		_, err = conn.Exec(context.Background(), "ir", name, day, start, end, userId)
-		if err != nil {
-			return err
-		}
+	_, err = conn.Exec(context.Background(), "ir", name, days, start, end, userId)
+	if err != nil {
+		return err
 	}
 
 	return nil

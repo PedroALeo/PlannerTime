@@ -1,12 +1,8 @@
 CREATE TABLE IF NOT EXISTS users (
 	user_id BIGSERIAL PRIMARY KEY NOT NULL,
-	username VARCHAR(255) UNIQUE NOT NULL,
+	username VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
-	bio TEXT,
-	email VARCHAR(255) UNIQUE NOT NULL,
-	phone_numbers VARCHAR(255),
-	language_preferences VARCHAR(100),
-	profile_picture TEXT
+	email VARCHAR(255) UNIQUE NOT NULL
 );
 
 create table if not exists tasks (
@@ -22,7 +18,7 @@ create table if not exists tasks (
 create table if not exists restrictions (
 	restriction_id bigserial not null,
 	name varchar(255),
-	day varchar(255),
+	days varchar(255)[],
 	start_hour text,
 	end_hour text,
 	user_id BIGINT NOT NULL,
