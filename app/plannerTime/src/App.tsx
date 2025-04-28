@@ -1,33 +1,45 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import LandingPage from './pages/LandingPage/LandingPage.tsx'
-//import ProfilePage from './pages/Profile/ProfilePage.tsx'
-    import Login from './pages/Login/Login.tsx'
-import Restrictions from './pages/Restrictions/Restrictions.tsx'
-import Tasks from './pages/Task/TaskForm.tsx'
-import SignUp from './pages/SignUp/SignUp.tsx'
-import Calendar from './pages/Calendar/Calendar2.tsx'
-import Home from './pages/Home/Home.tsx'
-import Layout from './components/Layout.tsx';
-
+import Layout from '@/components/layout/layout.tsx'
+import CreateRestrictions from '@/pages/create-restrictions'
+import Home from '@/pages/home'
+import TaskForm from '@/pages/task-form'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Apresentation from './pages/apresentation'
+import Events from './pages/events'
 function App() {
+  const publicRoutes = [
+    {
+      path: '/',
+      index: true,
+      element: <Apresentation />,
+    },
+  ]
 
-        const routes = [{
-          element: <Layout />,
-          children: [
-            {path: "/lp", element: <LandingPage />},
-            {path: "/home", element: <Home />},
-            {path: "/login", element: <Login />},
-            //{path: "/profile", element: <ProfilePage />},
-            {path: "/restrictions", element: <Restrictions/>},
-            {path: "/tasks", element: <Tasks/>},
-            {path: "/signup", element: <SignUp/>},
-            {path: "/calendar", element: <Calendar/>},
-          ],
-          },
-          { path: "*", element: <Navigate to="/lp" /> }
-          ];
+  const privateRoutes = [
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        {
+          path: 'home',
+          element: <Home />,
+        },
+        {
+          path: 'calendar',
+          element: <Events />,
+        },
+        {
+          path: 'tasks',
+          element: <TaskForm />,
+        },
+        {
+          path: 'restrictions',
+          element: <CreateRestrictions />,
+        },
+      ],
+    },
+  ]
 
-        const router = createBrowserRouter(routes);
+  const router = createBrowserRouter([...publicRoutes, ...privateRoutes])
 
   return <RouterProvider router={router} />
 }
