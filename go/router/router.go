@@ -27,22 +27,19 @@ func InitEcho() {
 	//USER
 	e.GET("/getUser/:email", handlers.HandlerGetUserByEmail)
 	e.POST("/createUser", handlers.HandlerCreateUser)
-	e.PATCH("/updateUser", handlers.HandlerUpdateUser)
+	//e.PATCH("/updateUser", handlers.HandlerUpdateUser)
 	e.POST("/login", handlers.HandlerLogin)
-	//e.GET("/userScheduller/:username", handlers.Handle)
+
+	e.GET("/userScheduller/:email", handlers.HanlderCalculateUserScheduler)
 
 	e.POST("/createTask/:email", handlers.CreateTask)
 	e.GET("/getTasks/:email", handlers.GetTasks)
-	//e.DELETE("/deleteTask/:eventId", handlers.Handler)
-	//e.PATCH("/updateTask", handlers.Up)
-	//e.
+	e.DELETE("/deleteTask/:email/:taskId", handlers.DeleteTask)
 
 	//RESTRICTION
 	e.POST("/createRestriction/:email", handlers.HandlerCreateRestriction)
 	e.GET("/getRestrictions/:email", handlers.GetRestrictions)
-	//e.PATCH("/updateRestrictions/:username", handlers.HandlerUpdateRestriction)
-	//e.DELETE("/deleteRestrictions/:username", handlers.HandlerDeleteRestriction)
-	//e.GET("/getRestrictions/:username", handlers.)
+	e.DELETE("/deleteRestrictions/:email/:restrictionId", handlers.HandlerDeleteRestriction)
 
 	for _, route := range e.Routes() {
 		fmt.Printf("Path: %s, Method: %s\n", route.Path, route.Method)

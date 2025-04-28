@@ -10,6 +10,36 @@ import (
 
 type restrictions struct{}
 
+func ServiceDeleteTask(email string, taskid int) error {
+	err := repository.DeleteTask(email, taskid)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ServiceCalculateUserScheduler(email string) (WeekMap, error) {
+	user, err := ServiceFindUser(email)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := ServiceGetRestrictions(user.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	tasks, err := ServiceGetTasks(email)
+	if err != nil {
+		return nil, err
+	}
+
+	wm := CalculateSchduller(res, tasks)
+
+	return wm, nil
+}
+
 func ServiceGetRestrictions(userId int) ([]repository.Restriction, error) {
 	rs, err := repository.GetRestrictions(userId)
 	if err != nil {
@@ -26,34 +56,6 @@ func ServiceGetTasks(email string) ([]repository.Task, error) {
 	}
 
 	return rs, nil
-}
-
-func ServiceDeleteEvent(eventId int) error {
-	err := repository.DeleteEvent(eventId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func ServiceUpdateEvent(event repository.Event) error {
-	err := repository.UpdateEvent(event)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func GetRes(userId int) ([]repository.Restriction, error) {
-	rests, err := repository.GetRest(userId)
-	if err != nil {
-		println(err.Error())
-		return nil, err
-	}
-
-	return rests, nil
 }
 
 func ServiceGetUserScheduller(userId int) ([]repository.Event, error) {
@@ -117,17 +119,13 @@ func ServiceCreateRestriction(userId int, name, start, end string, days []string
 	return nil
 }
 
-func ServiceUpdateRestriction(userId int, crontab, description string) error {
-	err := repository.UpdateRestriction(userId, crontab, description)
+func ServiceDeleteRestriction(email string, restrictionId int) error {
+	user, err := ServiceFindUser(email)
 	if err != nil {
 		return err
 	}
 
-	return nil
-}
-
-func ServiceDeleteRestriction(userId int) error {
-	err := repository.DeleteRestriction(userId)
+	err = repository.DeleteRestriction(user.Id, restrictionId)
 	if err != nil {
 		return err
 	}

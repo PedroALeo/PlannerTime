@@ -19,18 +19,20 @@ type Event struct {
 }
 
 type Task struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	Duration int    `json:"estimatedTime"`
-	Priority int32  `json:"priority"`
-	End      string `json:"dueDate"`
+	Id       int       `json:"id"`
+	Name     string    `json:"name"`
+	Duration int       `json:"estimatedTime"`
+	Priority int32     `json:"priority"`
+	End      string    `json:"dueDate"`
+	EndTime  time.Time `json:"-"`
 }
 
 type Restriction struct {
-	Id       int      `json:"id"`
-	Name     string   `json:"name"`
-	Duration string   `json:"duration"`
-	Days     []string `json:"weekDay"`
+	Id         int      `json:"id"`
+	Name       string   `json:"name"`
+	Duration   string   `json:"duration"`
+	Days       []string `json:"weekDay"`
+	Start, End int      `json:"-"`
 }
 
 func GetTasks(email string) ([]Task, error) {
@@ -49,12 +51,11 @@ func GetTasks(email string) ([]Task, error) {
 	var rs []Task
 	for rows.Next() {
 		var r Task
-		var ed time.Time
-		if err := rows.Scan(&r.Id, &r.Name, &r.Duration, &r.Priority, &ed); err != nil {
+		if err := rows.Scan(&r.Id, &r.Name, &r.Duration, &r.Priority, &r.EndTime); err != nil {
 			return nil, err
 		}
 
-		r.End = strings.Split(ed.String(), " ")[0]
+		r.End = strings.Split(r.EndTime.String(), " ")[0]
 
 		rs = append(rs, r)
 	}
@@ -94,6 +95,8 @@ func GetRestrictions(userId int) ([]Restriction, error) {
 		}
 
 		r.Duration = strconv.Itoa(ehi - shi)
+		r.Start = shi
+		r.End = ehi
 
 		rs = append(rs, r)
 	}
@@ -101,69 +104,22 @@ func GetRestrictions(userId int) ([]Restriction, error) {
 	return rs, nil
 }
 
-func UpdateEvent(event Event) error {
+func DeleteTask(email string, taskid int) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return err
 	}
 
-	query := `update public.events
-	set duration=$1, end_timestamp=$2, description=$3, priority=$4
-	where event_id=$5;`
-
-	_, err = conn.Prepare(context.Background(), "ue", query)
-
-	_, err = conn.Exec(context.Background(), "ue", event.Duration, event.End, event.Description, event.Priority, event.Id)
-	if err != nil {
-		log.Println(err.Error())
-		return err
-	}
-
-	return nil
-}
-
-func DeleteEvent(eventId int) error {
-	conn, err := db.ConnectToDatabase()
-	if err != nil {
-		return err
-	}
-
-	query := `delete from public.events where event_id = $1`
+	query := `delete from public.task where task_id = $1 and user_email = $2`
 
 	_, err = conn.Prepare(context.Background(), "de", query)
 
-	_, err = conn.Exec(context.Background(), "de", eventId)
+	_, err = conn.Exec(context.Background(), "de", taskid, email)
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func GetRest(userId int) ([]Restriction, error) {
-	//conn, err := db.ConnectToDatabase()
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	//restrictionsQuery := `select restriction_id, description, frequency from public.restrictions where user_id = $1`
-
-	//rows, err := conn.Query(context.Background(), restrictionsQuery, userId)
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	//var rests []Restriction
-	//for rows.Next() {
-	//	var rest Restriction
-	//	if err := rows.Scan(&rest.Id, &rest.Description, &rest.Frequency); err != nil {
-	//		return nil, err
-	//	}
-
-	//	rests = append(rests, rest)
-	//}
-
-	return nil, nil
 }
 
 func GetEventsAndRestrictions(userId int) ([]Event, error) {
@@ -266,44 +222,20 @@ func CreateRestriction(userId int, name, start, end string, days []string) error
 	return nil
 }
 
-func UpdateRestriction(userId int, crontab, description string) error {
+func DeleteRestriction(userId, restrictionId int) error {
 	conn, err := db.ConnectToDatabase()
 	if err != nil {
 		return err
 	}
 
-	query := `update public.restrictions
-		set frequency = $1, 
-		description = $2 
-	where user_id = $3;`
+	query := `delete from public.restrictions where restriction_id = $1 and user_id = $2;`
 
 	_, err = conn.Prepare(context.Background(), "ir", query)
 	if err != nil {
 		return err
 	}
 
-	_, err = conn.Exec(context.Background(), "ir", crontab, description, userId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func DeleteRestriction(userId int) error {
-	conn, err := db.ConnectToDatabase()
-	if err != nil {
-		return err
-	}
-
-	query := `delete from public.restrictions where restriction_id = $1;`
-
-	_, err = conn.Prepare(context.Background(), "ir", query)
-	if err != nil {
-		return err
-	}
-
-	_, err = conn.Exec(context.Background(), "ir", userId)
+	_, err = conn.Exec(context.Background(), "ir", restrictionId, userId)
 	if err != nil {
 		return err
 	}
