@@ -110,7 +110,7 @@ func DeleteTask(email string, taskid int) error {
 		return err
 	}
 
-	query := `delete from public.task where task_id = $1 and user_email = $2`
+	query := `delete from public.tasks where task_id = $1 and user_email = $2`
 
 	_, err = conn.Prepare(context.Background(), "de", query)
 

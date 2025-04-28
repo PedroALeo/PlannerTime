@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"plannertime/repository"
 	"slices"
 	"sort"
@@ -67,8 +66,8 @@ func initWeekMap(r []repository.Restriction) WeekMap {
 
 	for i := range 7 {
 		tm := time.Duration(24 * (i + 1))
-		mk := time.Now().Add(time.Hour * tm)
-		wd := time.Now().Add(time.Hour * tm).Day()
+		mk := time.Now().Truncate(24 * time.Hour).Add(time.Hour * tm)
+		wd := mk.Day()
 
 		var ar []repository.Restriction
 
@@ -78,8 +77,6 @@ func initWeekMap(r []repository.Restriction) WeekMap {
 			}
 		}
 
-		fmt.Printf("%v\n", ar)
-
 		wm[strings.Split(mk.String(), " ")[0]] = CreateDayMap(ar)
 	}
 
@@ -88,7 +85,7 @@ func initWeekMap(r []repository.Restriction) WeekMap {
 
 func FillTasks(wm WeekMap, t []repository.Task) {
 
-	tomorrow := time.Now().Truncate(24 * time.Hour).Add(time.Hour * 24)
+	tomorrow := time.Now().Truncate(24 * time.Hour).Add(time.Hour * 48)
 
 	sort.Slice(t, func(i, j int) bool {
 		iDueTomorrow := t[i].EndTime.Truncate(24 * time.Hour).Equal(tomorrow)
@@ -104,8 +101,16 @@ func FillTasks(wm WeekMap, t []repository.Task) {
 		return t[i].Priority < t[j].Priority
 	})
 
+	dates := make([]string, 0, len(wm))
+	for date := range wm {
+		dates = append(dates, date)
+	}
+	sort.Strings(dates)
+
 	for len(t) > 0 {
-		for _, dm := range wm {
+		for _, date := range dates {
+			dm := wm[date]
+
 			keys := make([]int, 0, len(dm))
 			for k := range dm {
 				keys = append(keys, k)
@@ -136,9 +141,6 @@ func FillTasks(wm WeekMap, t []repository.Task) {
 }
 
 func CalculateSchduller(r []repository.Restriction, t []repository.Task) WeekMap {
-
-	fmt.Printf("%v\n", r)
-	fmt.Printf("%v\n", t)
 
 	wm := initWeekMap(r)
 
