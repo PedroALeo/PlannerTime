@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"plannertime/service"
 	"strconv"
@@ -17,11 +18,13 @@ func GetRestrictions(c echo.Context) error {
 
 	user, err := service.ServiceFindUser(email)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "GetUser error")
 	}
 
 	rs, err := service.ServiceGetRestrictions(user.Id)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "ServiceCreateEvent error")
 	}
 
@@ -36,6 +39,7 @@ func HandlerCreateRestriction(c echo.Context) error {
 
 	user, err := service.ServiceFindUser(email)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "GetUser error")
 	}
 
@@ -50,11 +54,13 @@ func HandlerCreateRestriction(c echo.Context) error {
 
 	err = json.NewDecoder(c.Request().Body).Decode(&request)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
 
 	err = service.ServiceCreateRestriction(user.Id, request.Name, request.Start, request.End, request.Days)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "ServiceCreateEvent error")
 	}
 

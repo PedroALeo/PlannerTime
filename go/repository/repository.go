@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"plannertime/db"
-	"plannertime/entity"
+	userEntity "plannertime/entity/user"
 	"strconv"
 	"strings"
 	"time"
@@ -22,13 +22,13 @@ type Task struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Duration int    `json:"estimatedTime"`
-	Priority int    `json:"priority"`
+	Priority int32  `json:"priority"`
 	End      string `json:"dueDate"`
 }
 
 type Restriction struct {
 	Id       int    `json:"id"`
-	Name     int    `json:"name"`
+	Name     string `json:"name"`
 	Duration string `json:"duration"`
 	Day      string `json:"weekDay"`
 }
@@ -50,7 +50,7 @@ func GetTasks(email string) ([]Task, error) {
 	for rows.Next() {
 		var r Task
 		var ed time.Time
-		if err := rows.Scan(&r.Id, &r.Name, &r.Duration, r.Priority, &ed); err != nil {
+		if err := rows.Scan(&r.Id, &r.Name, &r.Duration, &r.Priority, &ed); err != nil {
 			return nil, err
 		}
 

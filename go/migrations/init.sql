@@ -28,3 +28,5 @@ create table if not exists restrictions (
 	user_id BIGINT NOT NULL,
 	constraint restriction_fk_user_id foreign key (user_id) references users(user_id)
 );
+
+

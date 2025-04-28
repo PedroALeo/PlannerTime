@@ -1,7 +1,7 @@
 package service
 
 import (
-	userEntity "plannertime/entity"
+	userEntity "plannertime/entity/user"
 	"plannertime/repository"
 	"time"
 

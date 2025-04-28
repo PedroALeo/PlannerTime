@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	userEntity "plannertime/entity"
+	userEntity "plannertime/entity/user"
 	"plannertime/service"
 
 	"github.com/labstack/echo/v4"

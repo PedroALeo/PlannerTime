@@ -14,6 +14,7 @@ func GetTasks(c echo.Context) error {
 
 	ts, err := service.ServiceGetTasks(email)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "get tasks error")
 	}
 
@@ -24,24 +25,26 @@ func CreateTask(c echo.Context) error {
 	email := c.Param("email")
 
 	type Body struct {
-		Name         string `json:"nome"`
-		TimeCoast    string `json:"tempoEstimado"` // Formato: "HH:MM"
-		DeliveryDate string `json:"dataConclusao"` // Formato: "YYYY-MM-DD"
-		Priority     int    `json:"prioridade"`    // 1 (alta) a 5 (baixa)
+		Name      string `json:"nome"`
+		TimeCoast string `json:"tempoEstimado"`
+		DueDate   string `json:"dataConclusao"` // Formato: "YYYY-MM-DD"
+		Priority  int    `json:"prioridade"`    // 1 (alta) a 5 (baixa)
 	}
 	var body Body
 
 	err := c.Bind(&body)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, "invalid body")
 	}
 
 	tc, err := strconv.Atoi(body.TimeCoast)
 	if err != nil {
+		log.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, "invalid body")
 	}
 
-	err = service.ServiceCreateTask(email, body.Name, body.DeliveryDate, tc, body.Priority)
+	err = service.ServiceCreateTask(email, body.Name, body.DueDate, tc, body.Priority)
 	if err != nil {
 		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, "create task error")
