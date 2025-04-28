@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
+import {useNavigate} from "react-router-dom"
 
 // Definição do tipo de atividade
 interface Atividade {
@@ -16,6 +17,11 @@ const AtividadeForm: React.FC = () => {
   const [tempoEstimado, setTempoEstimado] = useState<string>("")
   const [dataConclusao, setDataConclusao] = useState<string>("")
   const [prioridade, setPrioridade] = useState<number>(3) // Prioridade média como padrão
+  const navigate = useNavigate();
+
+  const taskRedirect = () => {
+    navigate("/calendar");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,6 +47,8 @@ const AtividadeForm: React.FC = () => {
         console.log("creat task error");
         throw new Error("cration failed. Please try again.");
       }
+
+      alert("Atividade criada com sucesso!!")
 
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -205,6 +213,7 @@ const AtividadeForm: React.FC = () => {
             </div>
 
             <button
+              onClick={taskRedirect}
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
